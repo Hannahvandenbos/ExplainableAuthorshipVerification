@@ -2,9 +2,7 @@ from collections import defaultdict
 import copy
 
 def get_individual_texts_per_topic(data):
-    '''
-    Return dictionary with list of texts per topic
-    '''
+    '''Return dictionary with list of texts per topic'''
     topic_texts = defaultdict(list)
     for line in data:
         text1 = line["Pair"][0]
@@ -16,6 +14,7 @@ def get_individual_texts_per_topic(data):
     return topic_texts
 
 def mask_first_text(data, masked_data, perturb_second):
+    '''Perturb one or both texts'''
     new_data = copy.deepcopy(data)
     for line, masked_line in zip(new_data, masked_data):
         line["Pair"][0] = masked_line["Pair"][0]
