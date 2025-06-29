@@ -1,5 +1,3 @@
-**Code will be uploaded soon**
-
 # Explainable Authorship Verification: Topic Reliance in Transformer Models
 
 This repository provides the code used for the following MSc AI thesis at the University of Amsterdam and as part of an internship at the Netherlands Forensic Institute: \
@@ -96,7 +94,62 @@ python -m explainableAV.data_prep.data_split --samples_per_pair 15000 --SS_file_
 python -m explainableAV.data_prep.data_split --samples_per_pair 2500 --SS_file_path "explainableAV/PAN20/SS.json" --SD_file_path "explainableAV/PAN20/SD.json" --DS_file_path "explainableAV/PAN20/DS.json" --DD_file_path "explainableAV/PAN20/DD.json"
 ```
 
+## Perturb the Texts
+In order to perturb the texts, you first have the extract the topic words with Guided lda:
+```sh
+# Amazon
+python -m explainableAV.extract_topic.guided_lda --data_path "explainableAV/Amazon/test_set_15000x4.json"
+# PAN20
+python -m explainableAV.extract_topic.guided_lda --data_path "explainableAV/PAN20/test_set_2500x4.json" --save_name "explainableAV/extract_topic/pan20_topic_related_all_nouns.json" --data_name 'pan20'
+```
+
+To evaluate Guided LDA run:
+```sh
+# Amazon
+python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/Amazon/test_set_15000x4.json" --data_name 'amazon' --evaluate_masks 
+python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/Amazon/test_set_15000x4.json" --data_name 'amazon' --inter_distance
+
+# PAN20
+python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --inter_distance
+python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --evaluate_masks
+```
+
+To compute the perturbed texts, you can run the following file, and see the file for the command line arguments (there are a lot of variations):
+```sh
+# general perturbations
+python -m explainableAV.change_topic.mask_words
+
+# LLM perturbations (set the prefered file name)
+python -m explainableAV.change_topic.llm_perturbations --data_path "explainableAV/Amazon/test_set_15000x4.json" --save "explainableAV/change_topic/..."
+```
+
+To compute the mask quality, run commands like the following:
+```sh
+# Example for pos tag perturbation on PAN20 data only comparing the first text in each pair
+python -m explainableAV.change_topic.mask_quality --data_path_SS "explainableAV/PAN20/SS_test_2500.json" --data_path_SD "explainableAV/PAN20/SD_test_2500.json" --data_path_DS "explainableAV/PAN20/DS_test_2500.json" --data_path_DD "explainableAV/PAN20/DD_test_2500.json" --masked_data_path_SS "explainableAV/change_topic/pan20_lda_SS_pos tag_False_False.json" --masked_data_path_SD "explainableAV/change_topic/pan20_lda_SD_pos tag_False_False.json" --masked_data_path_DS "explainableAV/change_topic/pan20_lda_DS_pos tag_False_False.json" --masked_data_path_DD "explainableAV/change_topic/pan20_lda_DD_pos tag_False_False.json" --mask_one_text --mask_type 'pos tag' --dataset_name 'pan20'
+```
+
 ## Experiments
+### Behavioral (Input-Output Relations)
+In order to compute the model classification thresholds, you can run (change the model name accordingly):
+```sh
+# Amazon
+python -m explainableAV.models.find_threshold --SS_val_path "explainableAV/Amazon/SS_val_7500.json" --SD_val_path "explainableAV/Amazon/SD_val_7500.json" --DS_val_path "explainableAV/Amazon/DS_val_7500.json" --DD_val_path "explainableAV/Amazon/DD_val_7500.json" --model_name "LUAR" --dataset_name "amazon"
+
+# PAN20
+python -m explainableAV.models.find_threshold --SS_val_path "explainableAV/PAN20/SS_val_1250.json" --SD_val_path "explainableAV/PAN20/SD_val_1250.json" --DS_val_path "explainableAV/PAN20/DS_val_1250.json" --DD_val_path "explainableAV/PAN20/DD_val_1250.json" --model_name "LUAR" --dataset_name "pan20"
+```
+
+To get the original model performance on the Amazon SS data for LUAR (on the original data):
+```sh
+python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test_15000.json" --model_name "LUAR" --mask_type 'original' --data_split 'SS'
+
+# Example of running with masked POS tag data, only altering the first text (single-sided perturbation)
+python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test_15000.json" --extra_data_path "explainableAV/change_topic/amazon_lda_SS_pos tag_False_False.json" --model_name "LUAR" --mask_type 'pos tag' --data_split 'SS' 
+
+```
+Similarly the arguments can be altered to run the other combinations (also for the masked data)
+
 ### Attributional (Attention) 
 There are various experiments that can be run for the attention examination. The experiments from the thesis can be run by the following commands:
 ```sh
@@ -128,18 +181,51 @@ python -m explainableAV.attention.attention --data_path 'explainableAV/attention
 python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/SS_test_15000.json" --model_name "LUAR" --pair_type 'SS' --ablate_attention
 ```
 
-The file *explainableAV/attention/attention.py* supports the following arguments:
+### Concept-Based (Probing)
+To probe the hidden states of the model, run:
+```sh
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'SS' --data_path 'explainableAV/Amazon/SS_test_15000.json'
+```
+Use --pretrained_model for the pretrained results, and --masked_data for the masked data results
 
-| Argument        | Type  | Default | Description                         |
-|----------------|-------|---------|-------------------------------------|
-| `--data_path`      | str   | 'explainableAV/Amazon/test_set_15000x4.json'      | Data file path           |
-| `--model_name`  | str   | "LUAR"      | Model to use, one of: 'LUAR', 'ModernBERT', 'StyleDistance'         |
-| `--seed`   | int   | 0    | Set seed       |
-| `--attention_type`   | str   | 'raw'    | Type of attention to apply, choose from 'raw', 'rollout', 'value_zeroing', 'value_zeroing_rollout', 'globenc'       |
-| `--pair_type`   | str   | 'SS'    | Pair type: 'SS', 'SD', 'DS', 'DD'       |
-| `--plot_type`   | str   | None    | Choose from: 'over_tokens', 'over_layers', 'text_plot', 'per_layer_over_tokens', 'topic_attention_layers'       |
-| `--topic_related_path`   | str   | 'explainableAV/extract_topic/amazon_topic_related_8400_filtered.json'    | Path to data with topic-related words       |
-| `--datapoint`   | int   | None    | Index for topic attention ratio plot       |
-| `--faithfulness`   | action   | None    | Compute faithfulness scores if true       |
-| `--topic_words_attention`   | action   | None    | Compute attention to topic words if true      |
-| `--visualize_masked`   | action   | None    | Visualize masked version of datapoint for text plot if correct datapoint      |
+### Plotting the results
+All results can be plotted as following:
+```sh
+# lda evaluation
+python -m explainableAV.models.results.plot_results --plot_type "lda"
+
+# topic distribution of data
+python -m explainableAV.models.results.plot_results --plot_type "topic_distribution" --dataset_name 'amazon'
+python -m explainableAV.models.results.plot_results --plot_type "topic_distribution" --dataset_name 'pan20'
+
+# text similarity
+python -m explainableAV.models.results.plot_results --plot_type "text_similarity" --dataset_name 'amazon'
+python -m explainableAV.models.results.plot_results --plot_type "text_similarity" --dataset_name 'pan20'
+
+# confusion plots
+python -m explainableAV.models.results.plot_results --plot_type "confusion" --experiment 'both' --baseline --dataset_name 'amazon'
+python -m explainableAV.models.results.plot_results --plot_type "confusion" --experiment 'first' --baseline --dataset_name 'amazon'
+python -m explainableAV.models.results.plot_results --plot_type "confusion" --experiment 'both' --baseline --dataset_name 'pan20'
+python -m explainableAV.models.results.plot_results --plot_type "confusion" --experiment 'first' --baseline --dataset_name 'pan20'
+
+# attention top words
+ python -m explainableAV.models.results.plot_results --plot_type "top_attention_words"
+
+# heatmaps
+python -m explainableAV.models.results.plot_results --plot_type "heatmaps" --experiment 'both' --dataset_name 'pan20' --baseline
+python -m explainableAV.models.results.plot_results --plot_type "heatmaps" --experiment 'first' --dataset_name 'pan20' --baseline
+
+# probing accuracy 
+python -m explainableAV.models.results.plot_results --plot_type 'probing_line_plot'
+
+# probing heatmaps
+python -m explainableAV.models.results.plot_results --plot_type 'probing_heatmap' --model_name 'LUAR'
+python -m explainableAV.models.results.plot_results --plot_type 'probing_heatmap' --model_name 'ModernBERT'
+python -m explainableAV.models.results.plot_results --plot_type 'probing_heatmap' --model_name 'StyleDistance'
+python -m explainableAV.models.results.plot_results --plot_type 'probing_heatmap_f1'
+
+# probing learning curve
+python -m explainableAV.models.results.plot_results --plot_type 'probing_learning_curve' --model_name 'LUAR'
+python -m explainableAV.models.results.plot_results --plot_type 'probing_learning_curve' --model_name 'ModernBERT'
+python -m explainableAV.models.results.plot_results --plot_type 'probing_learning_curve' --model_name 'StyleDistance'
+```
