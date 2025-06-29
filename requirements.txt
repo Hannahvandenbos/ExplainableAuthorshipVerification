@@ -1,0 +1,15 @@
+sentence-transformers==3.4.1
+wandb==0.19.4
+torch==2.5.1
+torchvision==0.20.1
+transformers[torch]
+accelerate>=0.26.0
+shap>=0.40.0
+wordcloud
+scipy
+spacy
+zss
+nltk
+gensim
+numpy
+captum
