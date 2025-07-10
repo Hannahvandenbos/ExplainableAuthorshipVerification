@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import argparse
 from matplotlib.colors import LinearSegmentedColormap
 from explainableAV.utils.utils import load_dataset
+from explainableAV.utils.plot_utils import data_path
 import math
 
 def probing_learning_curve(metric_results, model_name):
@@ -76,8 +77,5 @@ def argument_parser():
 
 if __name__ == '__main__':
     args = argument_parser()
-    if args.results_path is None:
-        metric_results = load_dataset(f"explainableAV/results/probing_losses/probing_losses_{args.model_name}.json")
-    else:
-        metric_results = load_dataset(args.results_path)
+    metric_results = load_dataset(data_path(f"explainableAV/results/probing_losses/probing_losses_{args.model_name}.json", args.results_path))
     probing_learning_curve(metric_results, args.model_name)
