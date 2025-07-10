@@ -438,7 +438,7 @@ def perform_logistic_regression(probe_data, layer_num, model_name, random_repr=F
     f1_scores = class_metrics_df['f1-score'].tolist()
 
     # save metrics
-    metric_file = f"explainableAV/probes/probing_metrics_{model_name}.json"
+    metric_file = f"explainableAV/results/probing_metrics/probing_metrics_{model_name}.json"
     if os.path.exists(metric_file):
         metrics = load_dataset(metric_file)
     else:
@@ -472,7 +472,7 @@ def perform_logistic_regression(probe_data, layer_num, model_name, random_repr=F
 
     if not random_repr and not random_weights and not masked_data and not new_baseline and not pretrained:
         # save losses
-        loss_file = f"explainableAV/probes/probing_losses_{model_name}.json"
+        loss_file = f"explainableAV/results/probing_losses/probing_losses_{model_name}.json"
         if os.path.exists(loss_file):
             losses = load_dataset(loss_file)
         else:
@@ -553,7 +553,7 @@ if __name__ == '__main__':
                 print('--------CROSS-VALIDATION-----------')
                 perform_logistic_regression_cv(probe_data, i)
     elif args.model_name == 'ModernBERT':
-        for i in range(16, 23):#len(transformer_model.layers)+1): # set manually if necessary due to size of representations
+        for i in range(len(transformer_model.layers)+1): # set manually if necessary due to size of representations
             if args.random_representations:
                 perform_logistic_regression(probe_data, i, args.model_name, random_repr=True)
             elif args.random_weights:
