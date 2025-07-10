@@ -410,7 +410,7 @@ if __name__ == '__main__':
 
     # determine which layers to ablate
     if args.ablate_layers is not None:
-        probing_acc = load_dataset(f"explainableAV/probes/probing_metrics_{args.model_name}.json")["Test_accuracy"]
+        probing_acc = load_dataset(f"explainableAV/results/probing_metrics/probing_metrics_{args.model_name}.json")["Test_accuracy"]
         probing_acc.pop("1") # do not select first layer
         if args.model_name == 'LUAR': # do not select last layer
             probing_acc.pop("6")
