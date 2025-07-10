@@ -1,4 +1,3 @@
-from explainableAV.utils.plot_utils import data_path
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
@@ -6,6 +5,7 @@ import pandas as pd
 import argparse
 from matplotlib.colors import LinearSegmentedColormap
 from explainableAV.utils.utils import load_dataset
+from explainableAV.utils.plot_utils import data_path
 
 def probing_accuracy(metric_results_LUAR, metric_results_ModernBERT, metric_results_StyleDistance):
     '''
@@ -219,12 +219,12 @@ if __name__ == '__main__':
     args = argument_parser()
 
     if args.plot_type == 'heatmap':
-        metric_results = data_path(f"explainableAV/results/probing_metrics/probing_metrics_{args.model_name}.json", args.results_path)
+        metric_results = load_dataset(data_path(f"explainableAV/results/probing_metrics/probing_metrics_{args.model_name}.json", args.results_path))
         probing_per_layer_heatmap(metric_results, args.model_name)
     else:
-        metric_results_LUAR = data_path("explainableAV/results/probing_metrics/probing_metrics_LUAR.json", args.luar_results_path)
-        metric_results_ModernBERT = data_path("explainableAV/results/probing_metrics/probing_metrics_ModernBERT.json", args.modernbert_results_path)
-        metric_results_StyleDistance = data_path("explainableAV/results/probing_metrics/probing_metrics_StyleDistance.json", args.styledistance_results_path)
+        metric_results_LUAR = load_dataset(data_path("explainableAV/results/probing_metrics/probing_metrics_LUAR.json", args.luar_results_path))
+        metric_results_ModernBERT = load_dataset(data_path("explainableAV/results/probing_metrics/probing_metrics_ModernBERT.json", args.modernbert_results_path))
+        metric_results_StyleDistance = load_dataset(data_path("explainableAV/results/probing_metrics/probing_metrics_StyleDistance.json", args.styledistance_results_path))
         if args.plot_type == 'heatmap_f1':
             probing_f1_only(metric_results_LUAR, metric_results_ModernBERT, metric_results_StyleDistance)
         elif args.plot_type == 'probing_line_plot'
