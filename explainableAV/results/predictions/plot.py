@@ -7,6 +7,7 @@ from collections import defaultdict
 from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm
 from matplotlib.lines import Line2D
 from explainableAV.utils.utils import load_dataset
+from explainableAV.utils.plot_utils import data_path
 
 def create_np_arrays(data, mask_types, baseline=False):
     '''
@@ -377,19 +378,9 @@ def argument_parser():
 
 if __name__ == '__main__':
     args = argument_parser()
-    if args.luar_results_path is None:
-        luar = load_dataset(f"explainableAV/results/predictions/{args.dataset_name}_LUAR_predictions_mask_{args.experiment}.json")
-    else:
-        luar = load_dataset(args.luar_results_path)
-    if args.modernbert_results_path is None:
-        modernbert = load_dataset(f"explainableAV/results/predictions/{args.dataset_name}_ModernBERT_predictions_mask_{args.experiment}.json")
-    else:
-        modernbert = load_dataset(args.modernbert_results_path)
-
-    if args.styledistance_results_path is None:
-        styledistance = load_dataset(f"explainableAV/results/predictions/{args.dataset_name}_StyleDistance_predictions_mask_{args.experiment}.json")
-    else:
-        styledistance = load_dataset(args.styledistance_results_path)
+    luar = load_dataset(data_path(f"explainableAV/results/predictions/{args.dataset_name}_LUAR_predictions_mask_{args.experiment}.json", args.luar_results_path))
+    modernbert = load_dataset(data_path(f"explainableAV/results/predictions/{args.dataset_name}_ModernBERT_predictions_mask_{args.experiment}.json", args.modernbert_results_path))
+    styledistance = load_dataset(data_path(f"explainableAV/results/predictions/{args.dataset_name}_StyleDistance_predictions_mask_{args.experiment}.json", args.styledistance_results_path))
 
     if args.plot_type == 'confusion':
         models = {"LUAR": luar, "ModernBERT": modernbert, "StyleDistance": styledistance}
