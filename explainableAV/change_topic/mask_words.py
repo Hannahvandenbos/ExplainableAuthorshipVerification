@@ -277,5 +277,11 @@ if __name__ == '__main__':
     
     masked_data = mask_data(data, topic_related, nlp, args.baseline, mask_type=args.mask_type, mask_one_text=args.mask_one_text, different=args.different)
 
-    if args.save:
-        create_dataset(f"explainableAV/change_topic/{args.data_name}_new_baseline_lda_{args.pair_type}_{args.mask_type}_{args.mask_one_text}_{args.different}.json", masked_data)
+    if args.save and args.baseline and args.data_name == 'amazon':
+        create_dataset(f"explainableAV/change_topic/Amazon_baseline/{args.data_name}_new_baseline_lda_{args.pair_type}_{args.mask_type}_{args.mask_one_text}_{args.different}.json", masked_data)
+    elif args.save and not args.baseline and args.data_name == 'amazon':
+        create_dataset(f"explainableAV/change_topic/Amazon/{args.data_name}_lda_{args.pair_type}_{args.mask_type}_{args.mask_one_text}_{args.different}.json", masked_data)
+    if args.save and args.baseline and args.data_name == 'pan20':
+        create_dataset(f"explainableAV/change_topic/PAN20_baseline/{args.data_name}_new_baseline_lda_{args.pair_type}_{args.mask_type}_{args.mask_one_text}_{args.different}.json", masked_data)
+    if args.save and not args.baseline and args.data_name == 'pan20':
+        create_dataset(f"explainableAV/change_topic/PAN20/{args.data_name}_lda_{args.pair_type}_{args.mask_type}_{args.mask_one_text}_{args.different}.json", masked_data)
