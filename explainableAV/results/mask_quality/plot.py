@@ -3,6 +3,7 @@ import numpy as np
 import argparse
 from matplotlib.colors import LinearSegmentedColormap
 from explainableAV.utils.utils import load_dataset
+from explainableAV.utils.plot_utils import data_path
 
 def extract_metric_stats(mask_quality, metric, dataset):
     '''
@@ -93,11 +94,7 @@ def argument_parser():
 
 if __name__ == '__main__':
     args = argument_parser()
-
-    if args.results_path is None:
-        mask_quality = load_dataset(f"explainableAV/results/mask_quality/mask_quality_results_{args.dataset_name}.json") 
-    else:
-        mask_quality = load_dataset(args.results_path)
+    mask_quality = load_dataset(data_path(f"explainableAV/results/mask_quality/mask_quality_results_{args.dataset_name}.json", args.results_path))
     syntax_mean, syntax_std = extract_metric_stats(mask_quality, 'syntax', args.dataset_name)
     semantic_mean, semantic_std = extract_metric_stats(mask_quality, 'semantic', args.dataset_name)
     perplexity_mean, perplexity_std = extract_metric_stats(mask_quality, 'perplexity', args.dataset_name)
