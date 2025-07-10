@@ -86,7 +86,6 @@ def text_perturbation_plot(syntax_mean, syntax_std, semantic_mean, semantic_std,
 def argument_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_name', default='amazon', help='Choose from "amazon", "pan20"')
-    parser.add_argument('--baseline', action='store_true')
     parser.add_argument('--model_name', default='LUAR')
     parser.add_argument('--results_path', default=None, help="Set results path if results named differently otherwise assume default save name")
     args = parser.parse_args()
