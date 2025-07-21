@@ -106,12 +106,11 @@ def correct_classifications(document_topics, text_to_topic, topic_texts):
         print(f"Topic: {topic_name} - Incorrect assignments: {count}")   
 
 
-def guided_lda_main(topic_texts, num_words, nlp, seed):
+def guided_lda_main(topic_texts, nlp, seed):
     '''
     Perform Guided LDA
     Inputs:
         topic_texts: dictionary with texts per topic
-        num_words: number of topic words to save per topic
         nlp: Spacy's NLP
         seed: seed
     Outputs:
@@ -255,28 +254,40 @@ def argument_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, required=True, help="Path to test dataset")
     parser.add_argument('--data_name', type=str, default='amazon')
-    parser.add_argument('--save', type=str, help="path to save the topic related dictionary")
-    parser.add_argument('--num_words', type=int, default=10000)
     parser.add_argument('--seed', type=int, default=0)
-    parser.add_argument('--topic_words', type=int, default=0)
-    parser.add_argument('--save_name', type=str, default="explainableAV/extract_topic/amazon_topic_related_8400")
-
+    parser.add_argument('--topic_words', type=int, default=8400)
+    parser.add_argument('--save_name', type=str, default="explainableAV/extract_topic/amazon_topic_related_8400.json")
+    parser.add_argument('--evaluate', action='store_true', help='If True, will evaluate different numbers of topic words')
+    parser.add_argument('--save', type=str, help="path to save the topic related dictionary")
     return parser.parse_args()
 
 if __name__ == '__main__':
-    args = argument_parser()
-    # topic_dict = load_dataset("explainableAV/extract_topic/pan20_topic_related_all_nouns.json")
-    # length, words = count_words_in_x_topics(topic_dict, len(list(topic_dict.keys())))
-    # filter_common_words("explainableAV/extract_topic/pan20_topic_related_all_nouns.json", words, "explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json")
-    # filter_common_words(args.save_name, "explainableAV/extract_topic/amazon_topic_related_8400_filtered.json")
-    
+    args = argument_parser()  
     data = load_dataset(args.data_path)
     nlp = spacy.load('en_core_web_sm')
 
     topic_texts = get_individual_texts_per_topic(data)
-    if args.data_name == 'pan20':
+    if args.data_name == 'pan20' and not args.evaluate:
         get_topic_words_all_nouns(topic_texts, nlp, args.save_name)
+        topic_dict = load_dataset(args.save_name)
+        length, words = count_words_in_x_topics(topic_dict, len(list(topic_dict.keys())))
+        filter_common_words(args.save_name, words, "explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json")
+    
+    elif args.data_name == 'pan20' and args.evaluate:
+        model, topic_assignments, processed_texts, text_to_topic, topic_texts, vocab, doc_tokens, doc_texts, topic_index_to_name = guided_lda_main(topic_texts, nlp, args.seed)
+        for n_top_words in range(50, 1001, 50):
+            save_name = f'explainableAV/extract_topic/pan20_topic_related_{n_top_words}.json'
+            get_topic_words(n_top_words, model, vocab, topic_index_to_name, save_name)
+
+    elif args.data_name == 'amazon' and args.evaluate:
+        model, topic_assignments, processed_texts, text_to_topic, topic_texts, vocab, doc_tokens, doc_texts, topic_index_to_name = guided_lda_main(topic_texts, nlp, args.seed)
+        for n_top_words in range(700, 14001, 700):
+            save_name = f'explainableAV/extract_topic/amazon_topic_related_{n_top_words}.json'
+            get_topic_words(n_top_words, model, vocab, topic_index_to_name, save_name)
     else:
-        model, topic_assignments, processed_texts, text_to_topic, topic_texts, vocab, doc_tokens, doc_texts, topic_index_to_name = guided_lda_main(topic_texts, args.num_words, nlp, args.seed)
+        model, topic_assignments, processed_texts, text_to_topic, topic_texts, vocab, doc_tokens, doc_texts, topic_index_to_name = guided_lda_main(topic_texts, nlp, args.seed)
         get_topic_words(args.topic_words, model, vocab, topic_index_to_name, args.save_name)
+        topic_dict = load_dataset(args.save_name)
+        length, words = count_words_in_x_topics(topic_dict, len(list(topic_dict.keys())))
+        filter_common_words(args.save_name, words, f"explainableAV/extract_topic/amazon_topic_related_{args.topic_words}_filtered.json")
     
