@@ -154,7 +154,7 @@ def mask(tokens, pos_tags, topic, topic_datasets, percentages):
 
     return percentages
 
-def evaluate_masks(data, nlp, data_name):
+def evaluate_masks(data, nlp, data_name, evaluate):
     '''
     Compute percentage of altered text for different topic word set sizes
     Inputs:
@@ -165,13 +165,17 @@ def evaluate_masks(data, nlp, data_name):
     '''
     topic_datasets = {}
     if data_name == 'amazon': # load topic related dictionaries
-        # topic_datasets[f"topic_related_8400"] = load_dataset(f"explainableAV/extract_topic/{data_name}_topic_related_8400_filtered.json") # for final dataset evaluation
-        for n_top_words in range(700, 14001, 700):
-            topic_datasets[f"topic_related_{n_top_words}"] = load_dataset(f"explainableAV/extract_topic/{data_name}_topic_related_{n_top_words}.json")
+        if not evaluate:
+            topic_datasets[f"topic_related_8400"] = load_dataset(f"explainableAV/extract_topic/amazon_topic_related_8400_filtered.json") # for final dataset evaluation
+        else:
+            for n_top_words in range(700, 14001, 700):
+                topic_datasets[f"topic_related_{n_top_words}"] = load_dataset(f"explainableAV/extract_topic/amazon_topic_related_{n_top_words}.json")
     else:
-        # topic_datasets[f"topic_related_all_nouns"] = load_dataset(f"explainableAV/extract_topic/{data_name}_topic_related_all_nouns_filtered.json") # for final dataset evaluation
-        for n_top_words in range(5000, 60001, 5000):
-            topic_datasets[f"topic_related_{n_top_words}"] = load_dataset(f"explainableAV/extract_topic/{data_name}_topic_related_{n_top_words}.json")
+        if not evaluate:
+            topic_datasets[f"topic_related_all_nouns"] = load_dataset(f"explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json") # for final dataset evaluation
+        else:
+            for n_top_words in range(5000, 60001, 5000):
+                topic_datasets[f"topic_related_{n_top_words}"] = load_dataset(f"explainableAV/extract_topic/pan20_topic_related_{n_top_words}.json")
     
     percentages = defaultdict(list)
     for line in data:
@@ -184,25 +188,30 @@ def evaluate_masks(data, nlp, data_name):
         print(name, np.mean(percentages[name]))
 
 
-def evaluate_inter_topic_distance(data, nlp, data_name):
+def evaluate_inter_topic_distance(data, nlp, data_name, evaluate):
     '''
     Compute inter-topic distance for different topic word set sizes
     Inputs:
         data: input texts
         nlp: Spacy's NLP
         data_name: 'amazon' or 'pan20'
+        evaluate: whether to evaluate multiple numbers of topic words or just one
     Results are printed
     '''
     topic_datasets = {}
     # Load topic-related dictionaries
     if data_name == 'amazon':
-        # topic_datasets[f"topic_related_8400"] = load_dataset(f"explainableAV/extract_topic/{data_name}_topic_related_8400_filtered.json") # for final dataset evaluation
-        for n_top_words in range(700, 14001, 700):
-            topic_datasets[f"topic_related_{n_top_words}"] = load_dataset(f"explainableAV/extract_topic/{data_name}_topic_related_{n_top_words}.json")
+        if not evaluate:
+            topic_datasets[f"topic_related_8400"] = load_dataset(f"explainableAV/extract_topic/amazon_topic_related_8400_filtered.json") # for final dataset evaluation
+        else:
+            for n_top_words in range(700, 14001, 700):
+                topic_datasets[f"topic_related_{n_top_words}"] = load_dataset(f"explainableAV/extract_topic/amazon_topic_related_{n_top_words}.json")
     else:
-        # topic_datasets[f"topic_related_all_nouns"] = load_dataset(f"explainableAV/extract_topic/{data_name}_topic_related_all_nouns_filtered.json") # for final dataset evaluation
-        for n_top_words in range(5000, 60001, 5000):
-            topic_datasets[f"topic_related_{n_top_words}"] = load_dataset(f"explainableAV/extract_topic/{data_name}_topic_related_{n_top_words}.json")
+        if not evaluate:
+            topic_datasets[f"topic_related_all_nouns"] = load_dataset(f"explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json") # for final dataset evaluation
+        else:
+            for n_top_words in range(5000, 60001, 5000):
+                topic_datasets[f"topic_related_{n_top_words}"] = load_dataset(f"explainableAV/extract_topic/pan20_topic_related_{n_top_words}.json")
     
     results = []
     for topic_dataset in topic_datasets.values():
@@ -246,13 +255,10 @@ def argument_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, required=True, help="Path to test dataset")
     parser.add_argument('--save', type=str, help="path to save the topic related dictionary")
-    parser.add_argument('--num_words', type=int, default=10000)
-    parser.add_argument('--seed', type=int, default=0)
-    parser.add_argument('--topic_words', type=int, default=0)
     parser.add_argument('--data_name', default='amazon')
     parser.add_argument('--evaluate_masks', action='store_true')
     parser.add_argument('--inter_distance', action='store_true')
-
+    parser.add_argument('--evaluate', action='store_true', help='If True, evaluate multiple number of topic words')
     return parser.parse_args()
 
 
@@ -263,14 +269,7 @@ if __name__ == '__main__':
     nlp = spacy.load('en_core_web_sm')
 
     if args.evaluate_masks:
-        evaluate_masks(data, nlp, args.data_name)
+        evaluate_masks(data, nlp, args.data_name, args.evaluate)
 
     if args.inter_distance:
-        evaluate_inter_topic_distance(data, nlp, args.data_name)
-    # nouns, non_nouns = total_number_of_nouns(data, nlp)
-    # print("Total number of nouns: ", len(nouns))
-    # print("Total number of unique nouns: ", len(set(nouns)))
-    # print("Total number of non-nouns: ", len(non_nouns))
-    # print("Total number of unique non-nouns: ", len(set(non_nouns)))
-    # print("Total number of tokens: ", len(non_nouns+nouns))
-    # print("Total number of unique tokens: ", len(set(non_nouns+nouns)))
+        evaluate_inter_topic_distance(data, nlp, args.data_name, args.evaluate)
