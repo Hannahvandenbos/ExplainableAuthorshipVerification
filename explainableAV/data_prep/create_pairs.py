@@ -221,11 +221,11 @@ def diff_author_diff_topic(author_topic, DD_file_name):
 def argument_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed', type=int, default=0)
-    parser.add_argument('--dataset_path', type=str, default="Amazon/amazon_reviews_final.json", help='Path to dataset that has reviewerID, Topic and reviewText')
-    parser.add_argument('--SS_file_path', type=str, default="Amazon/SS.json", help="Path to store same-author same-topic data")
-    parser.add_argument('--SD_file_path', type=str, default="Amazon/SD.json", help="Path to store same-author different-topic data")
-    parser.add_argument('--DS_file_path', type=str, default="Amazon/DS.json", help="Path to store different-author same-topic data")
-    parser.add_argument('--DD_file_path', type=str, default="Amazon/DD.json", help="Path to store different-author different-topic data")    
+    parser.add_argument('--dataset_path', type=str, default="explainableAV/Amazon/amazon_reviews_final.json", help='Path to dataset that has reviewerID, Topic and reviewText')
+    parser.add_argument('--SS_file_path', type=str, default="explainableAV/Amazon/SS.json", help="Path to store same-author same-topic data")
+    parser.add_argument('--SD_file_path', type=str, default="explainableAV/Amazon/SD.json", help="Path to store same-author different-topic data")
+    parser.add_argument('--DS_file_path', type=str, default="explainableAV/Amazon/DS.json", help="Path to store different-author same-topic data")
+    parser.add_argument('--DD_file_path', type=str, default="explainableAV/Amazon/DD.json", help="Path to store different-author different-topic data")    
     args = parser.parse_args()
     return args
 
