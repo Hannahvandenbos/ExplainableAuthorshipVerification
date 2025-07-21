@@ -13,3 +13,4 @@ nltk
 gensim
 numpy
 captum
+prettytable
