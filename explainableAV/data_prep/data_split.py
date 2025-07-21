@@ -17,8 +17,8 @@ def individual_split(data_name, class_name, data, test_size=0.2, seed=0):
         train and test split
     '''
     train, test = train_test_split(data, test_size=test_size, random_state=seed)
-    create_dataset(f"{data_name}/{class_name}_train_filtered.json", train)
-    create_dataset(f"{data_name}/{class_name}_test_filtered.json", test)
+    create_dataset(f"explainableAV/{data_name}/{class_name}_train_filtered.json", train)
+    create_dataset(f"explainableAV/{data_name}/{class_name}_test_filtered.json", test)
     return train, test
 
 def manual_split(datas, name, data_names, samples_per_pair=15000):
@@ -40,18 +40,18 @@ def manual_split(datas, name, data_names, samples_per_pair=15000):
     for data, class_name in zip(datas, data_names):
         test_subset = random.sample(data, samples_per_pair)
         
-        create_dataset(f"explainableAV/{name}/{class_name}_test_{samples_per_pair}.json", test_subset)
+        create_dataset(f"explainableAV/{name}/{class_name}_test.json", test_subset)
         final_test_data += test_subset
 
         remaining_data = [item for item in data if item not in test_subset]
 
         val_size = samples_per_pair // 2
         val_subset = random.sample(remaining_data, val_size)
-        create_dataset(f"explainableAV/{name}/{class_name}_val_{val_size}.json", val_subset)
+        create_dataset(f"explainableAV/{name}/{class_name}_val.json", val_subset)
         final_val_data += val_subset
 
         train_subset = [item for item in remaining_data if item not in val_subset]
-        create_dataset(f"explainableAV/{name}/{class_name}_train_{len(train_subset)}.json", train_subset)
+        create_dataset(f"explainableAV/{name}/{class_name}_train.json", train_subset)
         final_train_data += train_subset
 
     return final_train_data, final_test_data, final_val_data
@@ -59,13 +59,13 @@ def manual_split(datas, name, data_names, samples_per_pair=15000):
 def argument_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed', type=int, default=0)
-    parser.add_argument('--data_name', type=str, default="PAN20", help='Dataset name: "PAN20" or "Amazon"')
+    parser.add_argument('--data_name', type=str, default="Amazon", help='Dataset name: "PAN20" or "Amazon"')
     parser.add_argument('--test_size', type=float, default=0.2, help='Test_size as a float')
     parser.add_argument('--samples_per_pair', type=int, default=15000)
-    parser.add_argument('--SS_file_path', type=str, default="Amazon/same_author_same_topic_pairs.json", help="Path to store same-author same-topic data")
-    parser.add_argument('--SD_file_path', type=str, default="Amazon/same_author_diff_topic_pairs.json", help="Path to store same-author different-topic data")
-    parser.add_argument('--DS_file_path', type=str, default="Amazon/diff_author_same_topic.json", help="Path to store different-author same-topic data")
-    parser.add_argument('--DD_file_path', type=str, default="Amazon/diff_author_diff_topic.json", help="Path to store different-author different-topic data")  
+    parser.add_argument('--SS_file_path', type=str, default="explainableAV/Amazon/SS.json", help="Path to load same-author same-topic data")
+    parser.add_argument('--SD_file_path', type=str, default="explainableAV/Amazon/SD.json", help="Path to load same-author different-topic data")
+    parser.add_argument('--DS_file_path', type=str, default="explainableAV/Amazon/DS.json", help="Path to load different-author same-topic data")
+    parser.add_argument('--DD_file_path', type=str, default="explainableAV/Amazon/DD.json", help="Path to load different-author different-topic data")  
     args = parser.parse_args()
     return args
 
