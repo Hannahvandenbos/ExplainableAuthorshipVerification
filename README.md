@@ -128,6 +128,9 @@ python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribu
 ```
 
 ## Perturbing the Texts
+In order to perturb the text, first extract topic words with Guided LDA, then perturb in various ways.
+
+### Guided LDA
 In order to perturb the texts, you first have the extract the topic words with Guided lda. If you want to use the topic words as used in the thesis, do:
 ```sh
 # Amazon
@@ -154,14 +157,26 @@ python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explain
 python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --evaluate_masks --evaluate # evaluation
 ```
 
-To compute the perturbed texts, you can run the following file, and see the file for the command line arguments (there are a lot of variations):
+### Perturbations
+To create the perturbed texts (Asterisk, POS tag, One words, and Swap), for single-sided perturbation, you can run the following commands for the SS test set on the Amazon data: 
 ```sh
 # general perturbations
-python -m explainableAV.change_topic.mask_words
-
-# LLM perturbations (set the prefered file name)
-python -m explainableAV.change_topic.llm_perturbations --data_path "explainableAV/Amazon/test_set_15000x4.json" --save "explainableAV/change_topic/..."
+python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazon/SS_test.json --topic_related_path "explainableAV/extract_topic/amazon_topic_related_8400_filtered.json" --mask_type "asterisk" --save --mask_one_text # asterisk
+python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazon/SS_test.json --topic_related_path "explainableAV/extract_topic/amazon_topic_related_8400_filtered.json" --mask_type "pos tag" --save --mask_one_text # pos tag 
+python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazon/SS_test.json --topic_related_path "explainableAV/extract_topic/amazon_topic_related_8400_filtered.json" --mask_type "one word" --save --mask_one_text # one word
+python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazon/SS_test.json --topic_related_path "explainableAV/extract_topic/amazon_topic_related_8400_filtered.json" --mask_type "change topic" --save --mask_one_text --different #swap 
 ```
+Replace the --data_path to correspond with the other pair types (SD_test.json, DS_test.json, and DD_test.json). For dual perturbation remove --mask_one_text. For swap, there is no dual perturbation. Additionally, when changing the pair type for swap, SS and DS should have --different, SD and DD should **not** have --different. 
+To run on the PAN20 data, replace the --data_path with "explainableAV/PAN20/..." with ... the corresponding pair type file and replace --topic_related_path with "explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json" and add the argument --data_name "pan20"
+
+To create the LLM perturbation (Amazon only), run:
+```sh
+python -m explainableAV.change_topic.llm_perturbations --data_path "explainableAV/Amazon/SS_test.json" --save "explainableAV/change_topic/Amazon/amazon_llama_SS.json"
+
+# To clean the perturbation afterwards (remove some artifacts from LLMs), run:
+ython -m explainableAV.change_topic.llm_clean --llm_data_path "explainableAV/change_topic/Amazon/amazon_llama_SS.json" --original_data_path "explainableAV/Amazon/SS_test.json" --save "explainableAV/change_topic/Amazon/amazon_llama_SS_cleaned.json"
+```
+Again, replace the --data_path to correspond with the other pair types (SD_test.json, DS_test.json, and DD_test.json).
 
 ## Perturbation Quality
 To compute the mask quality, run commands like the following:
