@@ -275,7 +275,7 @@ if __name__ == '__main__':
     
     elif args.data_name == 'pan20' and args.evaluate:
         model, topic_assignments, processed_texts, text_to_topic, topic_texts, vocab, doc_tokens, doc_texts, topic_index_to_name = guided_lda_main(topic_texts, nlp, args.seed)
-        for n_top_words in range(50, 1001, 50):
+        for n_top_words in range(5000, 60001, 5000):
             save_name = f'explainableAV/extract_topic/pan20_topic_related_{n_top_words}.json'
             get_topic_words(n_top_words, model, vocab, topic_index_to_name, save_name)
 
