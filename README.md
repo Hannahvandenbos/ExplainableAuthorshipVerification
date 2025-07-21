@@ -6,8 +6,12 @@ This repository provides the code used for the following MSc AI thesis at the Un
 **Abstract** \
 Authorship Verification (AV) analyzes two texts to determine whether they are written by the same author. In plagiarism detection, digital forensics, and legal proceedings, AV can have severe implications, resulting in a need for transparent decision making. Although the impact of various stylometric features has been studied for traditional machine learning techniques, there is limited research on the explainability of faster and higher performing Transformer models in the context of AV. Specifically, the effect of topic information, an inconsistent indicator for authorship, is underexplored. This thesis investigates the role of the topic of a text for BERT-related AV models. We introduce a three-level explainability framework for AV that examines input-output relations, attention patterns, and hidden state representations. Quantitative experiments show that substituting topic-related words can affect accuracy by -12.5\% to +43.85\%, depending on the model, dataset, and perturbation technique. Additionally, we find that topic information is reflected in the attention distributions, demonstrating a noticeable effect on topic bias in the predictions. Finally, probing experiments reveal that topic information is consistently encoded in the hidden representations of the models. These results indicate the importance of controlling for topic information in AV tasks to preserve style-based decision making, improving model performance and interpretability.
 
+## Code explanation
+The code explanation follows the storyline from the thesis, including all experiments and figures of how to obtain the same results.
+The thesis can be found [here](https://dspace.uba.uva.nl/server/api/core/bitstreams/a2c86cd4-9e90-47e7-8dc6-4638d5650766/content).
+
 ## Installation
-To install the necessary packages run the following:
+After downloading the project, install the necessary packages by running the following, we recommend to install it in a virtual or conda environment:
 
 ```sh
 # Upgrade pip
@@ -38,7 +42,7 @@ python -m spacy download en_core_web_sm
 Here, we explain how and where to download the data from and how to process it to ensure applicability to our experiments. We use two datasets: Amazon reviews and Fanfictions from the PAN2020 competition.
 
 ### Downloading the Data
-The *Amazon Reviews* dataset needs to be downloaded from: https://nijianmo.github.io/amazon/index.html \
+The *Amazon Reviews* dataset needs to be downloaded from [Amazon Reviews](https://nijianmo.github.io/amazon/index.html) \
 Download the 5-core files for the following categories and extract them to the *explainableAV/Amazon* folder:
 <ol>
   <li>"Amazon Fashion"</li>
@@ -59,7 +63,7 @@ Download the 5-core files for the following categories and extract them to the *
   <li>"Video Games"</li>
 </ol> 
 
-The PAN20 dataset needs to be downloaded from: https://zenodo.org/records/3724096 \
+The PAN20 dataset needs to be downloaded from [PAN20](https://zenodo.org/records/3724096) \
 You can opt for both the large or small version. The small version was used in this research. \
 Store the two jsonl files in the *explainableAV/PAN20* folder.
 
@@ -85,6 +89,15 @@ python -m explainableAV.data_prep.create_pairs --dataset_path "explainableAV/Ama
 python -m explainableAV.data_prep.create_pairs --dataset_path "explainableAV/PAN20/PAN20_filtered.json" --SS_file_path "explainableAV/PAN20/SS.json" --SD_file_path "explainableAV/PAN20/SD.json" --DS_file_path "explainableAV/PAN20/DS.json" --DD_file_path "explainableAV/PAN20/DD.json"
 ```
 
+To print an overview of the number of pairs per pair type in the data run:
+```sh
+# Amazon
+python -m explainableAV.data_prep.data_distributions
+
+# PAN20
+python -m explainableAV.data_prep.data_distributions --data_name "PAN20"
+```
+
 Finally, to create the train, test, and validation splits of the text pairs, run the following commands:
 ```sh
 # Amazon
@@ -92,6 +105,24 @@ python -m explainableAV.data_prep.data_split --samples_per_pair 15000 --SS_file_
 
 # PAN20
 python -m explainableAV.data_prep.data_split --samples_per_pair 2500 --SS_file_path "explainableAV/PAN20/SS.json" --SD_file_path "explainableAV/PAN20/SD.json" --DS_file_path "explainableAV/PAN20/DS.json" --DD_file_path "explainableAV/PAN20/DD.json"
+```
+
+To print an overview of the number of pairs per split per pair type in the data run:
+```sh
+# Amazon
+python -m explainableAV.data_prep.data_distributions --statistic 'splits'
+
+# PAN20
+python -m explainableAV.data_prep.data_distributions --statistic 'splits' --data_name "PAN20"
+```
+
+To plot the topic distributions of the train and test dataset, run the following:
+```sh
+# Amazon
+python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution'
+
+# PAN20
+python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution' --data_name "PAN20"
 ```
 
 ## Perturb the Texts
