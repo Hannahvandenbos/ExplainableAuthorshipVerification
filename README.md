@@ -181,8 +181,20 @@ Again, replace the --data_path to correspond with the other pair types (SD_test.
 ## Perturbation Quality
 To compute the mask quality, run commands like the following:
 ```sh
-# Example for pos tag perturbation on PAN20 data only comparing the first text in each pair
-python -m explainableAV.change_topic.mask_quality --data_path_SS "explainableAV/PAN20/SS_test_2500.json" --data_path_SD "explainableAV/PAN20/SD_test_2500.json" --data_path_DS "explainableAV/PAN20/DS_test_2500.json" --data_path_DD "explainableAV/PAN20/DD_test_2500.json" --masked_data_path_SS "explainableAV/change_topic/pan20_lda_SS_pos tag_False_False.json" --masked_data_path_SD "explainableAV/change_topic/pan20_lda_SD_pos tag_False_False.json" --masked_data_path_DS "explainableAV/change_topic/pan20_lda_DS_pos tag_False_False.json" --masked_data_path_DD "explainableAV/change_topic/pan20_lda_DD_pos tag_False_False.json" --mask_one_text --mask_type 'pos tag' --dataset_name 'pan20'
+# Example for asterisk perturbation on Amazon data only comparing the first text in each pair
+python -m explainableAV.change_topic.mask_quality --data_path_SS "explainableAV/Amazon/SS_test.json" --data_path_SD "explainableAV/Amazon/SD_test.json" --data_path_DS "explainableAV/Amazon/DS_test.json" --data_path_DD "explainableAV/Amazon/DD_test.json" --masked_data_path_SS "explainableAV/change_topic/Amazon/mazon_lda_SS_asterisk_False_False.json" --masked_data_path_SD "explainableAV/change_topic/Amazon/amazon_lda_SD_asterisk_False_False.json" --masked_data_path_DS "explainableAV/change_topic/Amazon/amazon_lda_DS_asterisk_False_False.json" --masked_data_path_DD "explainableAV/change_topic/Amazon/amazon_lda_DD_asterisk_False_False.json" --mask_one_text --mask_type 'asterisk'
+```
+Replace the files to match the 'POS tag', 'One word', 'Swap', and 'LLM' perturbations or PAN20 dataset.
+--mask_one_text ensures a fair comparison between all perturbation techniques, but can be removed for 'Asterisk', 'POS tag', and 'One word'.
+
+### Plot
+To plot the results from the perturbation quality, run the following:
+```sh
+# Amazon
+python -m explainableAV.change_topic.perturbation_quality_plot
+
+# PAN20
+python -m explainableAV.change_topic.perturbation_quality_plot --dataset_name "pan20"
 ```
 
 ## Experiments
