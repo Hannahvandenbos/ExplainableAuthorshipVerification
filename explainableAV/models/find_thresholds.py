@@ -82,15 +82,15 @@ def thresholds_plot(best_threshold, thresholds, stds, total_accuracies, model_na
     ax1.legend(lines1 + lines2, labels1 + labels2, loc='center left', fontsize=18)
     fig.tight_layout()
 
-    plt.savefig(f"explainableAV/models/results/images/thresholds_{model_name}_{dataset_name}.pdf")
+    plt.savefig(f"explainableAV/models/results/thresholds_{model_name}_{dataset_name}.pdf")
     plt.show()
 
 def argument_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--SS_val_path', type=str, required=True, help="Path to validation set of SS split")
-    parser.add_argument('--SD_val_path', type=str, required=True, help="Path to validation set of SD split")
-    parser.add_argument('--DS_val_path', type=str, required=True, help="Path to validation set of DS split")
-    parser.add_argument('--DD_val_path', type=str, required=True, help="Path to validation set of DD split")
+    parser.add_argument('--SS_val_path', type=str, default="explainableAV/Amazon/SS_val.json", help="Path to validation set of SS split")
+    parser.add_argument('--SD_val_path', type=str, default="explainableAV/Amazon/SD_val.json", help="Path to validation set of SD split")
+    parser.add_argument('--DS_val_path', type=str, default="explainableAV/Amazon/DS_val.json", help="Path to validation set of DS split")
+    parser.add_argument('--DD_val_path', type=str, default="explainableAV/Amazon/DD_val.json", help="Path to validation set of DD split")
     parser.add_argument('--model_name', type=str, default="LUAR", help="Model to use, one of: 'LUAR', 'StyleDistance', 'ModernBERT'")
     parser.add_argument('--dataset_name', type=str, default="amazon", help="Dataset to use, one of: 'amazon', 'pan20'")
     parser.add_argument('--title', type=str, help="Anything that will be printed to recognise different runs")
