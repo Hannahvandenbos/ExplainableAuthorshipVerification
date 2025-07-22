@@ -114,38 +114,6 @@ def print_results(y_true, y_pred, threshold):
         "confidences": confidences
     }
 
-# def print_swaps(orig_predictions, predictions):
-#     swaps = {
-#         "0.0 -> 0.0": 0,
-#         "0.0 -> 1.0": 0,
-#         "1.0 -> 1.0": 0,
-#         "1.0 -> 0.0": 0
-#     }
-
-#     for o_pred, pred in zip(orig_predictions, predictions):
-#         swaps[f"{o_pred} -> {pred}"] += 1
-
-#     print("Swaps")
-#     for key, value in swaps.items():
-#         print(f"{key}: {value}")
-
-#     data_matrix = [[swaps["1.0 -> 1.0"], swaps["1.0 -> 0.0"]],
-#                     [swaps["0.0 -> 1.0"], swaps["0.0 -> 0.0"]]]
-
-#     print("McNemar test:")
-#     print(mcnemar(data_matrix, exact=False))
-
-# def paired_t_test(orig_predictions, predictions):
-#     differences = np.array(orig_predictions) - np.array(predictions)
-#     mean_differences = np.mean(differences)
-#     std_differences = np.std(differences, ddof=1)
-#     t_stat = mean_differences / (std_differences / np.sqrt(len(differences)))
-#     degrees_of_freedom = len(differences) - 1
-#     p_value = stats.t.sf(np.abs(t_stat), df=degrees_of_freedom) * 2
-    
-#     print(f"T-statistic: {t_stat:.3f}")
-#     print(f"P-value: {p_value:.5f}")
-
 def dictify(obj):
     '''
     Ensure that d is a dictionary so it can be easily saved
@@ -165,20 +133,22 @@ def dictify(obj):
     else:
         return obj
 
+def set_threshold(manual_threshold, default_threshold):
+    if manual_threshold != 0:
+        return manual_threshold
+    return default_threshold
+
 def argument_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_path', type=str, required=True, help="Path to test dataset")
-    # parser.add_argument('--swaps', action='store_true')
-    parser.add_argument('--save_name', type=str, required=True, help="Path to store results")
+    parser.add_argument('--data_path', type=str, default="explainableAV/Amazon/SS_test.json", help="Path to test dataset")
     parser.add_argument('--model_name', type=str, default="LUAR", help="Model to use, one of: 'LUAR', 'StyleDistance', 'ModernBERT'")
-    parser.add_argument('--confidence_file_name', type=str, default="explainableAV/models/confidence_scores_LUAR_asterisk.json")
-    parser.add_argument('--store_confidence', action='store_true')
     parser.add_argument('--batch_size', type=int, default=32)
-    parser.add_argument('--mask_type', default='asterisk')
+    parser.add_argument('--mask_type', default='original')
     parser.add_argument('--data_split', default='SS')
     parser.add_argument('--dataset_name', default='amazon')
     parser.add_argument('--extra_data_path', type=str, help="Path to masked data that should replace one of the texts in a pair of the data_path data")
     parser.add_argument('--perturb_second', action='store_true', help="Perturbs first text if False, perturbs both texts if True, if extra_data_path provided")
+    parser.add_argument('--threshold', type=int, default=0, help="If your thresholds differ from ours, set them manually")
     args = parser.parse_args()
     return args
 
@@ -201,21 +171,21 @@ if __name__ == '__main__':
     if args.model_name == "LUAR":
         model = SentenceTransformer("gabrielloiseau/LUAR-MUD-sentence-transformers")
         if args.dataset_name == 'amazon':
-            threshold = 0.37
+            threshold = set_threshold(args.threshold, 0.37)
         elif args.dataset_name == 'pan20':
-            threshold = 0.57
+            threshold = set_threshold(args.threshold, 0.57)
     elif args.model_name == "StyleDistance":
         model = SentenceTransformer("StyleDistance/styledistance") 
         if args.dataset_name == 'amazon':
-            threshold = 0.80
+            threshold = set_threshold(args.threshold, 0.80)
         elif args.dataset_name == 'pan20':
-            threshold = 0.95
+            threshold = set_threshold(args.threshold, 0.95)
     elif args.model_name == "ModernBERT":
         model = SentenceTransformer('gabrielloiseau/ModernBERT-base-authorship-verification')
         if args.dataset_name == 'amazon':
-            threshold = 0.86
+            threshold = set_threshold(args.threshold, 0.86)
         elif args.dataset_name == 'pan20':
-            threshold = 0.96
+            threshold = set_threshold(args.threshold, 0.96)
     else:
         print("Model name not recognised, choose one of: 'LUAR', 'StyleDistance', 'ModernBERT'")
         exit()
@@ -228,7 +198,11 @@ if __name__ == '__main__':
     results = print_results(y_true, y_pred, threshold)
 
     # save results
-    metrics_file = args.save_name
+    if args.perturb_second:
+        mask = 'both'
+    else:
+        mask = 'first'
+    metrics_file = f"explainableAV/results/predictions/{args.dataset_name}_{args.model_name}_predictions_mask_{mask}.json"
     if os.path.exists(metrics_file):
         metrics = load_dataset(metrics_file)
     else:
@@ -238,19 +212,3 @@ if __name__ == '__main__':
     metrics[args.data_split][args.mask_type] = results
 
     create_dataset(metrics_file, dictify(metrics))
-
-    # if args.swaps:
-    #     orig_data = load_dataset(args.data_path) 
-    #     if args.model_name == 'ModernBERT':
-    #         y_true_orig, y_pred_orig = evaluate_model(orig_data, model, batch_size=args.batch_size, modern_bert=True)
-    #         orig_predictions, orig_confidences = print_results(y_true_orig, y_pred_orig, threshold)
-    #     else: 
-    #         y_true_orig, y_pred_orig = evaluate_model(orig_data, model, batch_size=args.batch_size)
-    #         orig_predictions, orig_confidences = print_results(y_true_orig, y_pred_orig, threshold)
-    #         if args.store_confidence:
-    #             confidence_scores = load_dataset(args.confidence_file_name)
-    #             confidence_scores[f"{args.title}_original"] = orig_confidences
-    #             create_dataset(args.confidence_file_name, confidence_scores)
-
-    #     print_swaps(orig_predictions, predictions)
-    #     paired_t_test(y_pred_orig, y_pred)
