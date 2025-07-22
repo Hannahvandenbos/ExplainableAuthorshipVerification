@@ -1616,7 +1616,7 @@ if __name__ == '__main__':
                 attention_heatmap(attention_matrix1, tokens1, attention_matrix2, tokens2, confidence_score, save_name, aggregate_tokens=aggregate_tokens)
 
     if args.topic_words_attention: # save topic coverage and relative topic-attention ratio
-        metrics_file = f"explainableAV/attention_top_{args.model_name}_{args.attention_type}_non_topic.json"
+        metrics_file = f"explainableAV/results/attention/attention_top_{args.model_name}_{args.attention_type}_non_topic.json"
         if os.path.exists(metrics_file): # load or initialize file
             metrics = load_dataset(metrics_file)
         else:
@@ -1627,7 +1627,7 @@ if __name__ == '__main__':
         create_dataset(metrics_file, dictify(metrics))
 
     if args.faithfulness: # save faithfulness evaluation
-        metrics_file = "explainableAV/attention/attention_faithfulness.json"
+        metrics_file = "explainableAV/results/attention/attention_faithfulness.json"
 
         if os.path.exists(metrics_file):
             metrics_dict = load_dataset(metrics_file)
