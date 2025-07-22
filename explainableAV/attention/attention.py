@@ -729,7 +729,7 @@ def custom_text_plot(attention_matrix1, attention_matrix2, tokens1, tokens2, sen
 
     cropped_img = img.crop((0, 0, crop_right_pixel,  crop_bottom_pixel))
     cropped_img = cropped_img.convert("RGB")
-    cropped_img.save(f"explainableAV/attention_images/{save_name}")
+    cropped_img.save(f"explainableAV/results/attention/{save_name}")
 
 
 def custom_masked_text_plot(attention_matrix1, attention_matrix2, tokens1, tokens2, sentence1, sentence2, sentence1_orig, sentence2_orig, topic_words1, topic_words2, pair_type, save_name):
@@ -1616,7 +1616,7 @@ if __name__ == '__main__':
                 attention_heatmap(attention_matrix1, tokens1, attention_matrix2, tokens2, confidence_score, save_name, aggregate_tokens=aggregate_tokens)
 
     if args.topic_words_attention: # save topic coverage and relative topic-attention ratio
-        metrics_file = f"explainableAV/results/attention/attention_top_{args.model_name}_{args.attention_type}_non_topic.json"
+        metrics_file = f"explainableAV/results/attention/attention_top_{args.model_name}_{args.attention_type}.json"
         if os.path.exists(metrics_file): # load or initialize file
             metrics = load_dataset(metrics_file)
         else:
