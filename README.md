@@ -168,6 +168,7 @@ python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazo
 ```
 Replace the --data_path to correspond with the other pair types (SD_test.json, DS_test.json, and DD_test.json). For dual perturbation remove --mask_one_text. For swap, there is no dual perturbation. Additionally, when changing the pair type for swap, SS and DS should have --different, SD and DD should **not** have --different. 
 To run on the PAN20 data, replace the --data_path with "explainableAV/PAN20/..." with ... the corresponding pair type file and replace --topic_related_path with "explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json" and add the argument --data_name "pan20"
+Last, to create the **perturbation-specific baselines** for the behavioral experiment, add --baseline to each command
 
 To create the LLM perturbation (Amazon only), run:
 ```sh
@@ -211,24 +212,45 @@ python -m explainableAV.models.find_thresholds --SS_val_path "explainableAV/PAN2
 ```
 
 ### Behavioral (Input-Output Relations)
-In order to compute the model classification thresholds, you can run (change the model name accordingly):
+To get the **original/baseline** model performance, run the following, results are stored in explainableAV/results/predictions:
 ```sh
-# Amazon
-python -m explainableAV.models.find_threshold --SS_val_path "explainableAV/Amazon/SS_val_7500.json" --SD_val_path "explainableAV/Amazon/SD_val_7500.json" --DS_val_path "explainableAV/Amazon/DS_val_7500.json" --DD_val_path "explainableAV/Amazon/DD_val_7500.json" --model_name "LUAR" --dataset_name "amazon"
+python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test.json" --model_name "LUAR" --data_split "SS" --dataset_name "amazon" # Amazon SS data, LUAR model
+```
+Replace the data, model_name, data_split and dataset_name to obtain all results
+Additionally, run all commands again with --perturb_second to ensure that future results can be computed
 
-# PAN20
-python -m explainableAV.models.find_threshold --SS_val_path "explainableAV/PAN20/SS_val_1250.json" --SD_val_path "explainableAV/PAN20/SD_val_1250.json" --DS_val_path "explainableAV/PAN20/DS_val_1250.json" --DD_val_path "explainableAV/PAN20/DD_val_1250.json" --model_name "LUAR" --dataset_name "pan20"
+To obtain the results for the **perturbed texts**, run the same file with different arguments, results are stored in explainableAV/results/predictions:
+```sh
+# example usage
+python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test.json" --extra_data_path "explainableAV/change_topic/Amazon/amazon_lda_DD_asterisk_False_False.json" --perturb_second --model_name "LUAR" --mask_type 'asterisk' --data_split "DD" --dataset_name "amazon" # Amazon SS data, LUAR model, asterisk perturbation, DD pair type, dual perturbation
+
+# --data_path: provide the original text path
+# --extra_data_path: provide the corresponding altered text path (including the new baseline path)
+# --perturb_second: activate this for dual perturbation (only for 'Asterisk', 'POS tag', and 'One word')
+# --model_name: provide AV model: 'LUAR', 'ModernBERT', 'StyleDistance'
+# --mask_type: the mask type: 'asterisk', 'pos tag', 'one word', 'change topic', 'llm', 'asterisk_baseline', 'pos tag_baseline', 'one word_baseline', 'change topic_baseline'
+# --data_split: pair type: 'SS', 'SD', 'DS', 'DD'
+# --dataset_name: 'amazon' or 'pan20'
+# --threshold: set if your model threshold differs from the ones in the thesis
 ```
 
-To get the original model performance on the Amazon SS data for LUAR (on the original data):
+#### Plots
+To plot the results of the behavioral experiment:
 ```sh
-python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test_15000.json" --model_name "LUAR" --mask_type 'original' --data_split 'SS'
+# Confusion plot, plotting the TPs, TNs, FPs, and FNs
+python -m explainableAV.results.predictions --plot_type 'confusion' --experiment 'first' --dataset_name 'amazon' --baseline # Confusion plot, single-sided perturbation, Amazon data
+python -m explainableAV.results.predictions --plot_type 'confusion' --experiment 'both' --dataset_name 'amazon' --baseline # Confusion plot, dual perturbation, Amazon data
+python -m explainableAV.results.predictions --plot_type 'confusion' --experiment 'first' --dataset_name 'pan20' --baseline # Confusion plot, single-sided perturbation, PAN20 data
+python -m explainableAV.results.predictions --plot_type 'confusion' --experiment 'both' --dataset_name 'pan20' --baseline # Confusion plot, dual perturbation, PAN20 data
 
-# Example of running with masked POS tag data, only altering the first text (single-sided perturbation)
-python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test_15000.json" --extra_data_path "explainableAV/change_topic/amazon_lda_SS_pos tag_False_False.json" --model_name "LUAR" --mask_type 'pos tag' --data_split 'SS' 
+# Heatmaps 
+python -m explainableAV.results.predictions --plot_type 'heatmaps' --experiment 'first' --dataset_name 'amazon' --baseline # Heatmap plot, single-sided perturbation, Amazon data
+python -m explainableAV.results.predictions --plot_type 'heatmaps' --experiment 'both' --dataset_name 'amazon' --baseline # Heatmap plot, dual perturbation, Amazon data
+python -m explainableAV.results.predictions --plot_type 'heatmaps' --experiment 'first' --dataset_name 'pan20' --baseline # Heatmap plot, single-sided perturbation, PAN20 data
+python -m explainableAV.results.predictions --plot_type 'heatmaps' --experiment 'both' --dataset_name 'pan20' --baseline # Heatmap plot, dual perturbation, PAN20 data
 
+# Additionally, you can manually set the paths to your results when using different names through: --luar_results_path, --modernbert_results_path, --styledistance_results_path
 ```
-Similarly the arguments can be altered to run the other combinations (also for the masked data)
 
 ### Attributional (Attention) 
 There are various experiments that can be run for the attention examination. The experiments from the thesis can be run by the following commands:
