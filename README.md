@@ -198,7 +198,7 @@ python -m explainableAV.change_topic.perturbation_quality_plot
 python -m explainableAV.change_topic.perturbation_quality_plot --dataset_name "pan20"
 ```
 
-## Experiments
+## Experiments Setup
 ### Model Thresholds
 To find the optimal thresholds for the AV models, according to the minimum standard deviation between the accuracies over the pair types, run the following code whereby the plots over the thresholds are plotted as well (in explainableAV/models/results/):
 ```sh
@@ -211,7 +211,7 @@ python -m explainableAV.models.find_thresholds --SS_val_path "explainableAV/PAN2
 python -m explainableAV.models.find_thresholds --SS_val_path "explainableAV/PAN20/SS_val.json" --SD_val_path "explainableAV/PAN20/SD_val.json" --DS_val_path "explainableAV/PAN20/DS_val.json" --DD_val_path "explainableAV/PAN20/DD_val.json" --dataset_name "pan20" --model_name 'StyleDistance' # PAN20 data, StyleDistance model
 ```
 
-### Behavioral (Input-Output Relations)
+## Behavioral (Input-Output Relations)
 To get the **original/baseline** model performance, run the following, results are stored in explainableAV/results/predictions:
 ```sh
 python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test.json" --model_name "LUAR" --data_split "SS" --dataset_name "amazon" # Amazon SS data, LUAR model
@@ -219,6 +219,7 @@ python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test.js
 Replace the data, model_name, data_split and dataset_name to obtain all results
 Additionally, run all commands again with --perturb_second to ensure that future results can be computed
 
+### Perturbed Texts
 To obtain the results for the **perturbed texts**, run the same file with different arguments, results are stored in explainableAV/results/predictions:
 ```sh
 # example usage
@@ -234,7 +235,7 @@ python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test.js
 # --threshold: set if your model threshold differs from the ones in the thesis
 ```
 
-#### Plots
+### Plots
 To plot the results of the behavioral experiment:
 ```sh
 # Confusion plot, plotting the TPs, TNs, FPs, and FNs
@@ -252,36 +253,74 @@ python -m explainableAV.results.predictions --plot_type 'heatmaps' --experiment 
 # Additionally, you can manually set the paths to your results when using different names through: --luar_results_path, --modernbert_results_path, --styledistance_results_path
 ```
 
-### Attributional (Attention) 
-There are various experiments that can be run for the attention examination. The experiments from the thesis can be run by the following commands:
+## Attributional (Attention)
+To create the smaller datasets based on the most (and least) influenced datapoints, run the following:
 ```sh
-# faithfulness evaluation
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'raw' --model_name 'LUAR' --faithfulness
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'rollout' --model_name 'LUAR' --faithfulness
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'LUAR' --faithfulness
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'raw' --model_name 'ModernBERT' --faithfulness
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'rollout' --model_name 'ModernBERT' --faithfulness
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'ModernBERT' --faithfulness
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'raw' --model_name 'StyleDistance' --faithfulness
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'rollout' --model_name 'StyleDistance' --faithfulness
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'StyleDistnace' --faithfulness
-
-# attention scores for topic words
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'rollout' --model_name 'LUAR' --topic_words_attention
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'ModernBERT' --topic_words_attention 
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'raw' --model_name 'StyleDistance' --topic_words_attention 
-
-# Qualitative experiments text plots
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'LUAR' --plot_type 'text_plot' --datapoint 246
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'ModernBERT' --plot_type 'text_plot' --datapoint 246
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'StyleDistance' --plot_type 'text_plot' --datapoint 246
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'LUAR' --plot_type 'text_plot' --datapoint 338
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'ModernBERT' --plot_type 'text_plot' --datapoint 338
-python -m explainableAV.attention.attention --data_path 'explainableAV/attention/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'StyleDistance' --plot_type 'text_plot' --datapoint 338
-
-# Attention Ablation (this one deviates from the others and is explained inside the file)
-python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/SS_test_15000.json" --model_name "LUAR" --pair_type 'SS' --ablate_attention
+python -m explainableAV.data_prep_data_split_attention --data_name 'amazon' --experiment 'both' --mask_type 'asterisk' # arguments used in thesis, but can be altered
 ```
+The subdatasets are stored in explainableAV/Amazon/
+
+### Faithfulness Evaluation
+```sh
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'raw' --model_name 'LUAR' --faithfulness # raw attention, LUAR model
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'rollout' --model_name 'LUAR' --faithfulness # attention rollout, LUAR model
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'LUAR' --faithfulness # value zeroing, LUAR model
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'raw' --model_name 'ModernBERT' --faithfulness # raw attention, ModernBERT model
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'rollout' --model_name 'ModernBERT' --faithfulness # attention rollout, ModernBERT model
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'ModernBERT' --faithfulness # value zeroing, ModernBERT model
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'raw' --model_name 'StyleDistance' --faithfulness # raw attention, StyleDistance model
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'rollout' --model_name 'StyleDistance' --faithfulness # attention rollout, StyleDistance model
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'StyleDistnace' --faithfulness # value zeroing, StyleDistance model
+```
+The results are stored in explainableAV/results/attention/
+
+### Attention Scores for Topic Words
+```sh
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'rollout' --model_name 'LUAR' --topic_words_attention
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'ModernBERT' --topic_words_attention 
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'raw' --model_name 'StyleDistance' --topic_words_attention 
+```
+Results are stored in explainableAV/results/attention/
+
+#### Plots
+```sh
+python -m explainableAV.results.attention.plot
+
+# Additionally, you can manually set the paths to your results when using different names through: --luar_results_path, --modernbert_results_path, --styledistance_results_path
+```
+
+### Attention Distribution
+```sh
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'LUAR' --plot_type 'text_plot' --datapoint 246
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'ModernBERT' --plot_type 'text_plot' --datapoint 246
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'StyleDistance' --plot_type 'text_plot' --datapoint 246
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'LUAR' --plot_type 'text_plot' --datapoint 338
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'ModernBERT' --plot_type 'text_plot' --datapoint 338
+python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'StyleDistance' --plot_type 'text_plot' --datapoint 338
+```
+The plots are stored in explainableAV/results/attention/
+
+### Attention Ablation
+```sh
+# LUAR
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/SS_test.json" --model_name "LUAR" --pair_type 'SS' --ablate_attention
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/SD_test.json" --model_name "LUAR" --pair_type 'SD' --ablate_attention
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/DS_test.json" --model_name "LUAR" --pair_type 'DS' --ablate_attention
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/DD_test.json" --model_name "LUAR" --pair_type 'DD' --ablate_attention
+
+# ModernBERT
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/SS_test.json" --model_name "ModernBERT" --pair_type 'SS' --ablate_attention
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/SD_test.json" --model_name "ModernBERT" --pair_type 'SD' --ablate_attention
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/DS_test.json" --model_name "ModernBERT" --pair_type 'DS' --ablate_attention
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/DD_test.json" --model_name "ModernBERT" --pair_type 'DD' --ablate_attention
+
+# StyleDistance
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/SS_test.json" --model_name "StyleDistance" --pair_type 'SS' --ablate_attention
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/SD_test.json" --model_name "StyleDistance" --pair_type 'SD' --ablate_attention
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/DS_test.json" --model_name "StyleDistance" --pair_type 'DS' --ablate_attention
+python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazon/DD_test.json" --model_name "StyleDistance" --pair_type 'DD' --ablate_attention
+```
+The results are printed.
 
 ### Concept-Based (Probing)
 To probe the hidden states of the model, run:
