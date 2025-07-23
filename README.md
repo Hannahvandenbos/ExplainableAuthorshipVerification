@@ -322,51 +322,47 @@ python -m explainableAV.ablation_study.ablation --data_path "explainableAV/Amazo
 ```
 The results are printed.
 
-### Concept-Based (Probing)
+## Concept-Based (Probing)
 To probe the hidden states of the model, run:
 ```sh
-python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'SS' --data_path 'explainableAV/Amazon/SS_test_15000.json'
+# Fine-tuned test
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'SS' --data_path 'explainableAV/Amazon/SS_test.json'
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'SD' --data_path 'explainableAV/Amazon/SD_test.json'
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'DS' --data_path 'explainableAV/Amazon/DS_test.json'
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'DD' --data_path 'explainableAV/Amazon/DD_test.json'
+# Repeat for ModernBERT and StyleDistance
+
+# Pre-trained test
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'SS' --data_path 'explainableAV/Amazon/SS_test.json' --pretrained_model
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'SD' --data_path 'explainableAV/Amazon/SD_test.json' --pretrained_model
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'DS' --data_path 'explainableAV/Amazon/DS_test.json' --pretrained_model
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'DD' --data_path 'explainableAV/Amazon/DD_test.json' --pretrained_model
+# Repeat for ModernBERT and StyleDistance
+
+# Fine-tuned masked
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'SS' --data_path 'explainableAV/Amazon/amazon_lda_SS_asterisk_False_False.json' --masked_data
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'SD' --data_path 'explainableAV/Amazon/amazon_lda_SD_asterisk_False_False.json' --masked_data
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'DS' --data_path 'explainableAV/Amazon/amazon_lda_DS_asterisk_False_False.json' --masked_data
+python -m explainableAV.probes.probing --model_name 'LUAR' --pair_type 'DD' --data_path 'explainableAV/Amazon/amazon_lda_DD_asterisk_False_False.json' --masked_data
+# Repeat for ModernBERT and StyleDistance
 ```
-Use --pretrained_model for the pretrained results, and --masked_data for the masked data results
+Results are stored in explainableAV/results/probing_metrics/
+Results of the probing losses are stored in explainableAV/results/probing_losses/
 
-### Plotting the results
-All results can be plotted as following:
+### Plots
 ```sh
-# lda evaluation
-python -m explainableAV.models.results.plot_results --plot_type "lda"
+# Probing accuracy line plot
+python -m explainableAV.results.probing_metrics.plot --plot_type 'probing_line_plot'
+# Additionally, you can manually set the paths to your results when using different names through: --luar_results_path, --modernbert_results_path, --styledistance_results_path
 
-# topic distribution of data
-python -m explainableAV.models.results.plot_results --plot_type "topic_distribution" --dataset_name 'amazon'
-python -m explainableAV.models.results.plot_results --plot_type "topic_distribution" --dataset_name 'pan20'
-
-# text similarity
-python -m explainableAV.models.results.plot_results --plot_type "text_similarity" --dataset_name 'amazon'
-python -m explainableAV.models.results.plot_results --plot_type "text_similarity" --dataset_name 'pan20'
-
-# confusion plots
-python -m explainableAV.models.results.plot_results --plot_type "confusion" --experiment 'both' --baseline --dataset_name 'amazon'
-python -m explainableAV.models.results.plot_results --plot_type "confusion" --experiment 'first' --baseline --dataset_name 'amazon'
-python -m explainableAV.models.results.plot_results --plot_type "confusion" --experiment 'both' --baseline --dataset_name 'pan20'
-python -m explainableAV.models.results.plot_results --plot_type "confusion" --experiment 'first' --baseline --dataset_name 'pan20'
-
-# attention top words
- python -m explainableAV.models.results.plot_results --plot_type "top_attention_words"
-
-# heatmaps
-python -m explainableAV.models.results.plot_results --plot_type "heatmaps" --experiment 'both' --dataset_name 'pan20' --baseline
-python -m explainableAV.models.results.plot_results --plot_type "heatmaps" --experiment 'first' --dataset_name 'pan20' --baseline
-
-# probing accuracy 
-python -m explainableAV.models.results.plot_results --plot_type 'probing_line_plot'
-
-# probing heatmaps
-python -m explainableAV.models.results.plot_results --plot_type 'probing_heatmap' --model_name 'LUAR'
-python -m explainableAV.models.results.plot_results --plot_type 'probing_heatmap' --model_name 'ModernBERT'
-python -m explainableAV.models.results.plot_results --plot_type 'probing_heatmap' --model_name 'StyleDistance'
-python -m explainableAV.models.results.plot_results --plot_type 'probing_heatmap_f1'
+# Probing heatmaps
+python -m explainableAV.results.probing_metrics.plot --plot_type 'heatmap' --model_name 'LUAR'
+python -m explainableAV.results.probing_metrics.plot --plot_type 'heatmap' --model_name 'ModernBERT'
+python -m explainableAV.results.probing_metrics.plot --plot_type 'heatmap' --model_name 'StyleDistance'
+python -m explainableAV.results.probing_metrics.plot --plot_type 'heatmap_f1'
 
 # probing learning curve
-python -m explainableAV.models.results.plot_results --plot_type 'probing_learning_curve' --model_name 'LUAR'
-python -m explainableAV.models.results.plot_results --plot_type 'probing_learning_curve' --model_name 'ModernBERT'
-python -m explainableAV.models.results.plot_results --plot_type 'probing_learning_curve' --model_name 'StyleDistance'
+python -m explainableAV.results.probing_losses.plot --plot_type 'probing_learning_curve' --model_name 'LUAR'
+python -m explainableAV.results.probing_losses.plot --plot_type 'probing_learning_curve' --model_name 'ModernBERT'
+python -m explainableAV.results.probing_losses.plot --plot_type 'probing_learning_curve' --model_name 'StyleDistance'
 ```
