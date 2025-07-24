@@ -1069,7 +1069,8 @@ def append_tokens_large(token_count, lemmatized_tokens, lemma_idx, new_tokens, n
     for j in range(token_count):
         new_tokens.append(lemmatized_tokens[lemma_idx])
         new_pos_tags.append(pos_tags[pos_tag_idx])
-        new_att_mat.append(att_mat[att_mat_idx])
+        if att_mat_idx < len(att_mat) - 1:
+            new_att_mat.append(att_mat[att_mat_idx])
     lemma_idx += 1
     return new_tokens, lemma_idx, new_pos_tags, new_att_mat, att_mat_idx
 
