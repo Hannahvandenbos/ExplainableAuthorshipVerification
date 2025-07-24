@@ -184,7 +184,7 @@ if __name__ == '__main__':
     data = load_multiple_datasets([args.data_path_SS, args.data_path_SD, args.data_path_DS, args.data_path_DD])
     masked_data = load_multiple_datasets([args.masked_data_path_SS, args.masked_data_path_SD, args.masked_data_path_DS, args.masked_data_path_DD])
 
-    metrics_file = f"explainableAV/change_topic/results/mask_quality_results_{args.dataset_name}.json"
+    metrics_file = f"explainableAV/change_topic/mask_quality_results_{args.dataset_name}.json"
     if os.path.exists(metrics_file):
         metrics = load_dataset(metrics_file)
     else:
