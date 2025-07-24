@@ -1376,7 +1376,7 @@ def top_k_topic_words(results, attention_matrix, tokens, sentence, topic_words, 
         results
     '''
     attention_matrix_for_topic_idxs = attention_matrix.mean(dim=0)[1:-1]
-    _, _, topic_word_idxs = topic_attention_for_plot(sentence, attention_matrix_for_topic_idxs, tokens, topic_words, model, nlp)
+    _, _, _, topic_word_idxs = topic_attention_for_plot(sentence, attention_matrix_for_topic_idxs, tokens, topic_words, model, nlp)
     token_length = len(tokens)
    
     num_tokens_top_k = max(1, round(k * token_length))
@@ -1472,7 +1472,7 @@ if __name__ == '__main__':
         aggregate_tokens= False
 
     # replace layers for value zeroing
-    if args.attention_type == 'value_zeroing' or args.attention_type == 'value_zeroing_rollout' or args.spearman:
+    if args.attention_type == 'value_zeroing' or args.attention_type == 'value_zeroing_rollout':
         if args.model_name == 'LUAR' or args.model_name == 'StyleDistance':
             transformer_model_vz = copy.deepcopy(transformer_model)
             original_layers = list(transformer_model.encoder.layer)
