@@ -184,8 +184,11 @@ def evaluate_masks(data, nlp, data_name, evaluate):
         percentages = mask(tokens1, pos_tags1, line["Topics"][0], topic_datasets, percentages)
         percentages = mask(tokens2, pos_tags2, line["Topics"][1], topic_datasets, percentages)
 
-    for name in percentages.keys():
-        print(name, np.mean(percentages[name]))
+    if evaluate:
+        create_dataset(f"explainableAV/extract_topic/{data_name}_evaluate_mask_percentage.json", dict(percentages))
+    else:
+        for name in percentages.keys():
+            print(name, np.mean(percentages[name]))
 
 
 def evaluate_inter_topic_distance(data, nlp, data_name, evaluate):
