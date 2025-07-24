@@ -91,7 +91,7 @@ def argument_parser():
 
 if __name__ == '__main__':
     args = argument_parser()
-    mask_quality = load_dataset(f"explainableAV/change_topic/results/mask_quality_results_{args.dataset_name}.json") 
+    mask_quality = load_dataset(f"explainableAV/change_topic/mask_quality_results_{args.dataset_name}.json") 
     syntax_mean, syntax_std = extract_metric_stats(mask_quality, 'syntax', args.dataset_name)
     semantic_mean, semantic_std = extract_metric_stats(mask_quality, 'semantic', args.dataset_name)
     perplexity_mean, perplexity_std = extract_metric_stats(mask_quality, 'perplexity', args.dataset_name)
