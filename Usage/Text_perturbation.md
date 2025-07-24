@@ -29,5 +29,16 @@ python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explain
 python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --evaluate_masks --evaluate # evaluation
 ```
 The datasets with topic words are stored in explainableAV/extract_topic
-The evaluation results are stored in: 
+The evaluation results are stored in: explainableAV/extract_topic/{data_name}_evaluate_mask_percentage.json and explainableAV/extract_topic/{data_name}_evaluate_inter_topic_distance.json
+
+### Results
+The evaluation plot can be plotted by using the following command:
+```sh
+# Amazon
+python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/Amazon/test_set_15000x4.json" --data_name 'amazon' --plot
+
+# PAN20
+python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --plot
+```
+The plot is stored in explainableAV/extract_topic
 
