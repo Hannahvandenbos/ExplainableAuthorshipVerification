@@ -19,48 +19,6 @@ We recommend the following order to ensure you have everything you need:
 6. [Attributional Experiments](Usage/Attributional.md)
 7. [Concept-based Experiments](Usage/Concept_based.md)
 
-## Behavioral (Input-Output Relations)
-To get the **original/baseline** model performance, run the following, results are stored in explainableAV/results/predictions:
-```sh
-python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test.json" --model_name "LUAR" --data_split "SS" --dataset_name "amazon" # Amazon SS data, LUAR model
-```
-Replace the data, model_name, data_split and dataset_name to obtain all results
-Additionally, run all commands again with --perturb_second to ensure that future results can be computed
-
-### Perturbed Texts
-To obtain the results for the **perturbed texts**, run the same file with different arguments, results are stored in explainableAV/results/predictions:
-```sh
-# example usage
-python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test.json" --extra_data_path "explainableAV/change_topic/Amazon/amazon_lda_DD_asterisk_False_False.json" --perturb_second --model_name "LUAR" --mask_type 'asterisk' --data_split "DD" --dataset_name "amazon" # Amazon SS data, LUAR model, asterisk perturbation, DD pair type, dual perturbation
-
-# --data_path: provide the original text path
-# --extra_data_path: provide the corresponding altered text path (including the new baseline path)
-# --perturb_second: activate this for dual perturbation (only for 'Asterisk', 'POS tag', and 'One word')
-# --model_name: provide AV model: 'LUAR', 'ModernBERT', 'StyleDistance'
-# --mask_type: the mask type: 'asterisk', 'pos tag', 'one word', 'change topic', 'llm', 'asterisk_baseline', 'pos tag_baseline', 'one word_baseline', 'change topic_baseline'
-# --data_split: pair type: 'SS', 'SD', 'DS', 'DD'
-# --dataset_name: 'amazon' or 'pan20'
-# --threshold: set if your model threshold differs from the ones in the thesis
-```
-
-### Plots
-To plot the results of the behavioral experiment:
-```sh
-# Confusion plot, plotting the TPs, TNs, FPs, and FNs
-python -m explainableAV.results.predictions --plot_type 'confusion' --experiment 'first' --dataset_name 'amazon' --baseline # Confusion plot, single-sided perturbation, Amazon data
-python -m explainableAV.results.predictions --plot_type 'confusion' --experiment 'both' --dataset_name 'amazon' --baseline # Confusion plot, dual perturbation, Amazon data
-python -m explainableAV.results.predictions --plot_type 'confusion' --experiment 'first' --dataset_name 'pan20' --baseline # Confusion plot, single-sided perturbation, PAN20 data
-python -m explainableAV.results.predictions --plot_type 'confusion' --experiment 'both' --dataset_name 'pan20' --baseline # Confusion plot, dual perturbation, PAN20 data
-
-# Heatmaps 
-python -m explainableAV.results.predictions --plot_type 'heatmaps' --experiment 'first' --dataset_name 'amazon' --baseline # Heatmap plot, single-sided perturbation, Amazon data
-python -m explainableAV.results.predictions --plot_type 'heatmaps' --experiment 'both' --dataset_name 'amazon' --baseline # Heatmap plot, dual perturbation, Amazon data
-python -m explainableAV.results.predictions --plot_type 'heatmaps' --experiment 'first' --dataset_name 'pan20' --baseline # Heatmap plot, single-sided perturbation, PAN20 data
-python -m explainableAV.results.predictions --plot_type 'heatmaps' --experiment 'both' --dataset_name 'pan20' --baseline # Heatmap plot, dual perturbation, PAN20 data
-
-# Additionally, you can manually set the paths to your results when using different names through: --luar_results_path, --modernbert_results_path, --styledistance_results_path
-```
-
 ## Attributional (Attention)
 To create the smaller datasets based on the most (and least) influenced datapoints, run the following:
 ```sh
