@@ -71,13 +71,13 @@ Store the two jsonl files in the *explainableAV/PAN20* folder.
 Run the following commands to filter and reorder the datasets:
 ```sh
 # Amazon
-python -m explainableAV/data_prep/reorder_Amazon.py
+python -m explainableAV.data_prep.reorder_Amazon
 
 # PAN20 (small)
-python -m explainableAV/data_prep/reorder_PAN20.py --texts_path "explainableAV/PAN20/.pan20-authorship-verification-training-small.jsonl" --label_path "explainableAV/PAN20/pan20-authorship-verification-training-small-truth.jsonl"
+python -m explainableAV.data_prep.reorder_PAN20 --texts_path "explainableAV/PAN20/.pan20-authorship-verification-training-small.jsonl" --label_path "explainableAV/PAN20/pan20-authorship-verification-training-small-truth.jsonl"
 
 # PAN20 (large)
-python -m explainableAV/reorder_PAN20.py --texts_path "explainableAV/PAN20/pan20-authorship-verification-training-large.jsonl" --label_path "explainableAV/PAN20/pan20-authorship-verification-training-large-truth.jsonl"
+python -m explainableAV.reorder_PAN20 --texts_path "explainableAV/PAN20/pan20-authorship-verification-training-large.jsonl" --label_path "explainableAV/PAN20/pan20-authorship-verification-training-large-truth.jsonl"
 ```
 
 To create all text pairs (SS, SD, DS, DD), run the following commands:
