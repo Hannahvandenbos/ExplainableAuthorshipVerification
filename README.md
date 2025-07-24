@@ -14,60 +14,10 @@ We recommend the following order to ensure you have everything you need:
 1. [Initialization](Usage/Initialization.md)
 2. [Data Preparation](Usage/Data_preparation.md)
 3. [Text Perturbations](Usage/Text_perturbation.md)
-
-### Perturbations
-To create the perturbed texts (Asterisk, POS tag, One words, and Swap), for single-sided perturbation, you can run the following commands for the SS test set on the Amazon data: 
-```sh
-# general perturbations
-python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazon/SS_test.json --topic_related_path "explainableAV/extract_topic/amazon_topic_related_8400_filtered.json" --mask_type "asterisk" --save --mask_one_text # asterisk
-python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazon/SS_test.json --topic_related_path "explainableAV/extract_topic/amazon_topic_related_8400_filtered.json" --mask_type "pos tag" --save --mask_one_text # pos tag 
-python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazon/SS_test.json --topic_related_path "explainableAV/extract_topic/amazon_topic_related_8400_filtered.json" --mask_type "one word" --save --mask_one_text # one word
-python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazon/SS_test.json --topic_related_path "explainableAV/extract_topic/amazon_topic_related_8400_filtered.json" --mask_type "change topic" --save --mask_one_text --different #swap 
-```
-Replace the --data_path to correspond with the other pair types (SD_test.json, DS_test.json, and DD_test.json). For dual perturbation remove --mask_one_text. For swap, there is no dual perturbation. Additionally, when changing the pair type for swap, SS and DS should have --different, SD and DD should **not** have --different. 
-To run on the PAN20 data, replace the --data_path with "explainableAV/PAN20/..." with ... the corresponding pair type file and replace --topic_related_path with "explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json" and add the argument --data_name "pan20"
-Last, to create the **perturbation-specific baselines** for the behavioral experiment, add --baseline to each command
-
-To create the LLM perturbation (Amazon only), run:
-```sh
-python -m explainableAV.change_topic.llm_perturbations --data_path "explainableAV/Amazon/SS_test.json" --save "explainableAV/change_topic/Amazon/amazon_llama_SS.json"
-
-# To clean the perturbation afterwards (remove some artifacts from LLMs), run:
-ython -m explainableAV.change_topic.llm_clean --llm_data_path "explainableAV/change_topic/Amazon/amazon_llama_SS.json" --original_data_path "explainableAV/Amazon/SS_test.json" --save "explainableAV/change_topic/Amazon/amazon_llama_SS_cleaned.json"
-```
-Again, replace the --data_path to correspond with the other pair types (SD_test.json, DS_test.json, and DD_test.json).
-
-## Perturbation Quality
-To compute the mask quality, run commands like the following:
-```sh
-# Example for asterisk perturbation on Amazon data only comparing the first text in each pair
-python -m explainableAV.change_topic.mask_quality --data_path_SS "explainableAV/Amazon/SS_test.json" --data_path_SD "explainableAV/Amazon/SD_test.json" --data_path_DS "explainableAV/Amazon/DS_test.json" --data_path_DD "explainableAV/Amazon/DD_test.json" --masked_data_path_SS "explainableAV/change_topic/Amazon/mazon_lda_SS_asterisk_False_False.json" --masked_data_path_SD "explainableAV/change_topic/Amazon/amazon_lda_SD_asterisk_False_False.json" --masked_data_path_DS "explainableAV/change_topic/Amazon/amazon_lda_DS_asterisk_False_False.json" --masked_data_path_DD "explainableAV/change_topic/Amazon/amazon_lda_DD_asterisk_False_False.json" --mask_one_text --mask_type 'asterisk'
-```
-Replace the files to match the 'POS tag', 'One word', 'Swap', and 'LLM' perturbations or PAN20 dataset.
---mask_one_text ensures a fair comparison between all perturbation techniques, but can be removed for 'Asterisk', 'POS tag', and 'One word'.
-
-### Plot
-To plot the results from the perturbation quality, run the following:
-```sh
-# Amazon
-python -m explainableAV.change_topic.perturbation_quality_plot
-
-# PAN20
-python -m explainableAV.change_topic.perturbation_quality_plot --dataset_name "pan20"
-```
-
-## Experiments Setup
-### Model Thresholds
-To find the optimal thresholds for the AV models, according to the minimum standard deviation between the accuracies over the pair types, run the following code whereby the plots over the thresholds are plotted as well (in explainableAV/models/results/):
-```sh
-python -m explainableAV.models.find_thresholds # Amazon data, LUAR model
-python -m explainableAV.models.find_thresholds --model_name 'ModernBERT' # Amazon data, ModernBERT model
-python -m explainableAV.models.find_thresholds --model_name 'StyleDistance' # Amazon data, StyleDistance model
-
-python -m explainableAV.models.find_thresholds --SS_val_path "explainableAV/PAN20/SS_val.json" --SD_val_path "explainableAV/PAN20/SD_val.json" --DS_val_path "explainableAV/PAN20/DS_val.json" --DD_val_path "explainableAV/PAN20/DD_val.json" --dataset_name "pan20"  # PAN20 data, LUAR model
-python -m explainableAV.models.find_thresholds --SS_val_path "explainableAV/PAN20/SS_val.json" --SD_val_path "explainableAV/PAN20/SD_val.json" --DS_val_path "explainableAV/PAN20/DS_val.json" --DD_val_path "explainableAV/PAN20/DD_val.json" --dataset_name "pan20" --model_name 'ModernBERT' # PAN20 data, ModernBERT model
-python -m explainableAV.models.find_thresholds --SS_val_path "explainableAV/PAN20/SS_val.json" --SD_val_path "explainableAV/PAN20/SD_val.json" --DS_val_path "explainableAV/PAN20/DS_val.json" --DD_val_path "explainableAV/PAN20/DD_val.json" --dataset_name "pan20" --model_name 'StyleDistance' # PAN20 data, StyleDistance model
-```
+4. [Experiments Setup](Usage/Experiments_setup.md)
+5. [Behavioral Experiments](Usage/Behavioral.md)
+6. [Attributional Experiments](Usage/Attributional.md)
+7. [Concept-based Experiments](Usage/Concept_based.md)
 
 ## Behavioral (Input-Output Relations)
 To get the **original/baseline** model performance, run the following, results are stored in explainableAV/results/predictions:
