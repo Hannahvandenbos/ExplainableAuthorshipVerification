@@ -61,7 +61,7 @@ def text_perturbation_plot(syntax_mean, syntax_std, semantic_mean, semantic_std,
     plt.xlabel('Perturbation Technique', fontsize=18)
     plt.yticks(fontsize=16)
     plt.legend(fontsize=16, loc='lower left')
-    plt.savefig(f"explainableAV/change_topic/results/similarity_plot_{dataset_name}.pdf", dpi=300, bbox_inches='tight')
+    plt.savefig(f"explainableAV/change_topic/similarity_plot_{dataset_name}.pdf", dpi=300, bbox_inches='tight')
     plt.show()
 
     plt.figure(figsize=(8, 5))
@@ -80,7 +80,7 @@ def text_perturbation_plot(syntax_mean, syntax_std, semantic_mean, semantic_std,
     plt.yticks(fontsize=16)
     plt.ylabel('Standard Deviation', fontsize=18)
     plt.title(f"{data_name}", fontsize=20)
-    plt.savefig(f"explainableAV/change_topic/results/perplexity_plot_{dataset_name}.pdf", dpi=300, bbox_inches='tight')
+    plt.savefig(f"explainableAV/change_topic/perplexity_plot_{dataset_name}.pdf", dpi=300, bbox_inches='tight')
     plt.show()
 
 def argument_parser():
