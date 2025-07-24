@@ -366,13 +366,12 @@ def perform_logistic_regression_cv(probe_data, layer_num, patience=3):
     print(df.to_string())
 
 def perform_logistic_regression(probe_data, layer_num, model_name, random_repr=False, random_weights=False, pretrained=False, masked_data=False, new_baseline=False, patience=3):
-     '''
+    '''
     Probe
     Inputs:
         probe_data: data for probing
         layer_num: which layer to probe
         patience: patience
-
     '''
     X = []
     y = []
