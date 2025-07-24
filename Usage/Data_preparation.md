@@ -56,6 +56,7 @@ To plot the topic distributions of the train and test dataset, run the following
 ```sh
 python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution'
 ```
+Plots are stored in explainableAV/data_prep
 
 ## PAN20
 The PAN20 dataset needs to be downloaded from [PAN20](https://zenodo.org/records/3724096) \
@@ -94,10 +95,11 @@ python -m explainableAV.data_prep.data_distributions --data_name "PAN20"
 To print an overview of the number of pairs per split per pair type in the data, run:
 ```sh
 # PAN20
-python -m explainableAV.data_prep.data_distributions --statistic 'splits' --data_name "PAN20"
+python -m explainableAV.data_prep.data_distributions --statistic 'splits' --data_name "PAN20" --split_size 2500
 ```
 
 To plot the topic distributions of the train and test dataset, run the following:
 ```sh
-python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution' --data_name "PAN20"
+python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution' --data_name "PAN20" --split_size 2500
 ```
+Plots are stored in explainableAV/data_prep
