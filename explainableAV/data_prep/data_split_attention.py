@@ -39,15 +39,19 @@ if __name__ == '__main__':
         idxs_ordered = np.argsort(averages)
         idxs_most = idxs_ordered[-100:]
         idxs_least = idxs_ordered[:100]
-        dataset = load_dataset(f"explainableAV/Amazon/{pair_type}_test_15000.json")
+        if args.data_name == 'amazon':
+            data_name = 'Amazon'
+        else:
+            data_name = 'PAN20'
+        dataset = load_dataset(f"explainableAV/{data_name}/{pair_type}_test.json")
         dataset_most_influence.extend([dataset[i] for i in idxs_most])
         dataset_least_influence.extend([dataset[i] for i in idxs_least])
 
-        dataset_asterisk = load_dataset(f"explainableAV/change_topic/amazon_lda_{pair_type}_asterisk_False_False.json")
+        dataset_asterisk = load_dataset(f"explainableAV/change_topic/{data_name}/amazon_lda_{pair_type}_asterisk_False_False.json")
         dataset_most_influence_asterisk.extend([dataset_asterisk[i] for i in idxs_most])
         dataset_least_influence_asterisk.extend([dataset_asterisk[i] for i in idxs_least])
     
-    create_dataset('explainableAV/Amazon/attention_most_influence.json', dataset_most_influence)
-    create_dataset('explainableAV/Amazon/attention_least_influence.json', dataset_least_influence)
-    create_dataset('explainableAV/Amazon/attention_most_influence_asterisk.json', dataset_most_influence_asterisk)
-    create_dataset('explainableAV/Amazon/attention_least_influence_asterisk.json', dataset_least_influence_asterisk)
+    create_dataset(f'explainableAV/{data_name}/attention_most_influence.json', dataset_most_influence)
+    create_dataset(f'explainableAV/{data_name}/attention_least_influence.json', dataset_least_influence)
+    create_dataset(f'explainableAV/{data_name}/attention_most_influence_asterisk.json', dataset_most_influence_asterisk)
+    create_dataset(f'explainableAV/{data_name}/attention_least_influence_asterisk.json', dataset_least_influence_asterisk)
