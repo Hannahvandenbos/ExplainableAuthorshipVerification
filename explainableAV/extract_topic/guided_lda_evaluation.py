@@ -16,6 +16,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from concurrent.futures import ProcessPoolExecutor
+from matplotlib.colors import LinearSegmentedColormap
 
 def preprocess_text_for_recombination(text, nlp):
     '''
@@ -227,9 +228,16 @@ def evaluate_inter_topic_distance(data, nlp, data_name, evaluate):
             topic_dataset[topic] = results[idx]
             idx += 1
 
-    for topic_dataset in topic_datasets.values():
-        average_distance = inter_topic_distance(topic_dataset)
-        print(f"Average distance for dataset: {average_distance}")
+    if evaluate:
+        average_distances = {}
+        for topic_name, topic_dataset in topic_datasets.items():
+            average_distance = inter_topic_distance(topic_dataset)
+            average_distances[topic_name] = average_distance
+        create_dataset(f"explainableAV/extract_topic/{data_name}_evaluate_inter_topic_distance.json", average_distances)
+    else:
+        for topic_dataset in topic_datasets.values():
+            average_distance = inter_topic_distance(topic_dataset)
+            print(f"Average distance for dataset: {average_distance}")
 
 def total_number_of_nouns(data, nlp):
     '''
@@ -253,6 +261,42 @@ def total_number_of_nouns(data, nlp):
                     non_nouns.append(token)
     return nouns, non_nouns
 
+def plot(mask_evaluation, distance_evaluation, data_name):
+    '''
+    Plot LDA evaluation
+    Input:
+        data_name: dataset name
+    '''
+    inter_topic = list(distance_evaluation.values())
+    mask_percentage = [np.mean(eval) for eval in list(mask_evaluation.values())]
+    topic_related_size = [int(key.split('_')[-1]) for key in distance_evaluation.keys()]
+
+    fig, ax1 = plt.subplots(figsize=(8, 5))
+    custom_cmap = LinearSegmentedColormap.from_list("strong_puor", ["#5E00B5", "#FF8500"])
+
+    ax1.plot(topic_related_size, inter_topic, 'o-', color=custom_cmap(0.25), label='Average Inter-Topic Distance')
+    ax1.set_xlabel("Number of Topic Words", fontsize=18)
+    ax1.set_ylabel("Average Inter-Topic Distance", color=custom_cmap(0.25), fontsize=18)
+    ax1.tick_params(axis='y', labelcolor=custom_cmap(0.25), labelsize=16)
+    ax1.set_xticks(topic_related_size)
+    ax1.tick_params(axis='x', labelrotation=45, labelsize=14) 
+
+    ax2 = ax1.twinx()
+    ax2.plot(topic_related_size, mask_percentage, 's-', color=custom_cmap(0.95), label='Average Mask Percentage')
+    ax2.set_ylabel("Average Percentage of Altered Text", color=custom_cmap(0.95), fontsize=18)
+    ax2.tick_params(axis='y', labelcolor=custom_cmap(0.95), labelsize=16)
+
+    lines_1, labels_1 = ax1.get_legend_handles_labels()
+    lines_2, labels_2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines_1 + lines_2, labels_1 + labels_2, loc='lower center', bbox_to_anchor=(0.57, 0), fontsize=14)
+
+    if data_name == 'amazon':
+        plt.title('Guided LDA (Amazon)', fontsize=24)
+    elif data_name == 'pan20':
+        plt.title('Guided LDA (PAN20)', fontsize=24)
+
+    plt.savefig(f"explainableAV/extract_topic/{data_name}_lda_evaluation.pdf", dpi=300, bbox_inches='tight')
+
 
 def argument_parser():
     parser = argparse.ArgumentParser()
@@ -261,6 +305,7 @@ def argument_parser():
     parser.add_argument('--data_name', default='amazon')
     parser.add_argument('--evaluate_masks', action='store_true')
     parser.add_argument('--inter_distance', action='store_true')
+    parser.add_argument('--plot', action='store_true')
     parser.add_argument('--evaluate', action='store_true', help='If True, evaluate multiple number of topic words')
     return parser.parse_args()
 
@@ -276,3 +321,8 @@ if __name__ == '__main__':
 
     if args.inter_distance:
         evaluate_inter_topic_distance(data, nlp, args.data_name, args.evaluate)
+
+    if args.plot:
+        mask_evaluation = load_dataset(f"explainableAV/extract_topic/{args.data_name}_evaluate_mask_percentage.json")
+        distance_evaluation = load_dataset(f"explainableAV/extract_topic/{args.data_name}_evaluate_inter_topic_distance.json")
+        plot(mask_evaluation, distance_evaluation, args.data_name)
