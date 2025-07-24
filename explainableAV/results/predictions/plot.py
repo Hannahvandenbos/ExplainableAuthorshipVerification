@@ -210,7 +210,7 @@ def confusion_matrix(models_dict, data_name, experiment, baseline, type='TP'):
     num_elems = len(models_dict['LUAR']['SS']['original']['predictions'])
     mask_types = ['asterisk', 'pos tag', 'one word']
     if experiment == 'first':
-        mask_types.append('swap')
+        mask_types.append('change topic')
         if data_name == 'amazon':
             mask_types.append('llm')
     mask_types_advanced = []
@@ -392,7 +392,7 @@ if __name__ == '__main__':
     elif args.plot_type == 'heatmaps':
         mask_types = ['asterisk', 'pos tag', 'one word'] 
         if args.experiment == 'first':
-            mask_types.append('swap')
+            mask_types.append('change topic')
             if args.dataset_name == 'amazon':
                 mask_types.append('llm')
 
