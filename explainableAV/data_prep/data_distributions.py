@@ -121,9 +121,9 @@ def argument_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_name', type=str, default='Amazon', help="Name of the dataset: 'Amazon' or 'PAN20'")  
     parser.add_argument('--statistic', type=str, default='pairs', help="Which statistics to print: 'pairs' or 'splits' or 'topic_distribution'")
+    parser.add_argument('--split_size', type=int, default=15000, help="Set the size of each pair types' test set")
     args = parser.parse_args()
     return args
-
 
 if __name__ == '__main__':
     args = argument_parser()
@@ -147,14 +147,10 @@ if __name__ == '__main__':
         table.add_row([args.data_name, pairs, SS, SD, DS, DD])
         print(table)
     elif args.statistic == 'splits':
-        if args.data_name == 'Amazon':
-            split_size = 15000
-        else:
-            split_size = 2500
 
-        test = load_dataset(f"explainableAV/{args.data_name}/test_set_{split_size}x4.json")
-        validation = load_dataset(f"explainableAV/{args.data_name}/val_set_{split_size}x4.json")
-        train = load_dataset(f"explainableAV/{args.data_name}/train_set_{split_size}x4.json")
+        test = load_dataset(f"explainableAV/{args.data_name}/test_set_{args.split_size}x4.json")
+        validation = load_dataset(f"explainableAV/{args.data_name}/val_set_{args.split_size}x4.json")
+        train = load_dataset(f"explainableAV/{args.data_name}/train_set_{args.split_size}x4.json")
         total = test + validation + train
         topics = number_of_topics(total)
         text_size = text_size(test)
@@ -164,12 +160,7 @@ if __name__ == '__main__':
         table.add_row([args.data_name, len(test), len(validation), len(train), topics, text_size])
         print(table)
     else:
-        if args.data_name == 'Amazon':
-            split_size = 15000
-        else:
-            split_size = 2500
-
-        test = load_dataset(f"explainableAV/{args.data_name}/test_set_{split_size}x4.json")
-        train = load_dataset(f"explainableAV/{args.data_name}/train_set_{split_size}x4.json")
+        test = load_dataset(f"explainableAV/{args.data_name}/test_set_{args.split_size}x4.json")
+        train = load_dataset(f"explainableAV/{args.data_name}/train_set_{args.split_size}x4.json")
         topic_distribution(test, args.data_name, split='test')
         topic_distribution(train, args.data_name, split='train')
