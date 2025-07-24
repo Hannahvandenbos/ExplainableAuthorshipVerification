@@ -8,7 +8,6 @@ from explainableAV.utils.utils import load_dataset, load_multiple_datasets, crea
 from explainableAV.utils.perturb_utils import mask_first_text
 from sentence_transformers.util import cos_sim
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-from explainableAV.models.fine_tuning import fine_tune_model
 from statsmodels.stats.contingency_tables import mcnemar
 from collections import defaultdict
 import scipy.stats as stats
