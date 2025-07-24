@@ -95,16 +95,16 @@ def remove_topics_with_few_documents(multi_author_data, final_dataset_name, num_
 
 def argument_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--final_dataset_name', type=str, default="Amazon/amazon_reviews_final.json", help="Path to store final preprocessed amazon review data")
+    parser.add_argument('--final_dataset_name', type=str, default="explainableAV/Amazon/amazon_reviews_final.json", help="Path to store final preprocessed amazon review data")
     args = parser.parse_args()
     return args
 
 if __name__ == '__main__':
     args = argument_parser()
-    file_names = ["Amazon/AMAZON_FASHION_5.json", "Amazon/All_Beauty_5.json", "Amazon/Appliances_5.json", "Amazon/Arts_Crafts_and_Sewing_5.json", 
-    "Amazon/Automotive_5.json", "Amazon/CDs_and_Vinyl_5.json", "Amazon/Cell_Phones_and_Accessories_5.json", "Amazon/Clothing_Shoes_and_Jewelry_5.json", 
-    "Amazon/Digital_Music_5.json", "Amazon/Gift_Cards_5.json", "Amazon/Grocery_and_Gourmet_Food_5.json", "Amazon/Home_and_Kitchen_5.json", 
-    "Amazon/Industrial_and_Scientific_5.json", "Amazon/Prime_Pantry_5.json", "Amazon/Software_5.json", "Amazon/Video_Games_5.json"]
+    file_names = ["explainableAV/Amazon/AMAZON_FASHION_5.json", "explainableAV/Amazon/All_Beauty_5.json", "explainableAV/Amazon/Appliances_5.json", "explainableAV/Amazon/Arts_Crafts_and_Sewing_5.json", 
+    "explainableAV/Amazon/Automotive_5.json", "explainableAV/Amazon/CDs_and_Vinyl_5.json", "explainableAV/Amazon/Cell_Phones_and_Accessories_5.json", "explainableAV/Amazon/Clothing_Shoes_and_Jewelry_5.json", 
+    "explainableAV/Amazon/Digital_Music_5.json", "explainableAV/Amazon/Gift_Cards_5.json", "explainableAV/Amazon/Grocery_and_Gourmet_Food_5.json", "explainableAV/Amazon/Home_and_Kitchen_5.json", 
+    "explainableAV/Amazon/Industrial_and_Scientific_5.json", "explainableAV/Amazon/Prime_Pantry_5.json", "explainableAV/Amazon/Software_5.json", "explainableAV/Amazon/Video_Games_5.json"]
     topics = ["fashion", "beauty", "appliances", "arts, crafts and sewing", "automotive", "cds and vinyl", "cell phones and accessories", "clothing, shoe and jewelry",
     "digital music", "gift cards", "grocery and gourmet food", "home and kitchen", "industrial and scientific", "prime pantry", "software", "video games"]
     final_dataset_name = args.final_dataset_name
