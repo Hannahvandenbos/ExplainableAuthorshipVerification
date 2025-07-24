@@ -41,6 +41,22 @@ Finally, to create the train, test, and validation splits of the text pairs, run
 python -m explainableAV.data_prep.data_split --samples_per_pair 15000 --SS_file_path "explainableAV/Amazon/SS.json" --SD_file_path "explainableAV/Amazon/SD.json" --DS_file_path "explainableAV/Amazon/DS.json" --DD_file_path "explainableAV/Amazon/DD.json"
 ```
 
+### Results
+To print an overview of the number of pairs per pair type in the data, run:
+```sh
+python -m explainableAV.data_prep.data_distributions
+```
+
+To print an overview of the number of pairs per split per pair type in the data, run:
+```sh
+python -m explainableAV.data_prep.data_distributions --statistic 'splits'
+```
+
+To plot the topic distributions of the train and test dataset, run the following:
+```sh
+python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution'
+```
+
 ## PAN20
 The PAN20 dataset needs to be downloaded from [PAN20](https://zenodo.org/records/3724096) \
 You can opt for both the large or small version. The small version was used in this research. \
@@ -66,4 +82,22 @@ Finally, to create the train, test, and validation splits of the text pairs, run
 ```sh
 # PAN20
 python -m explainableAV.data_prep.data_split --samples_per_pair 2500 --SS_file_path "explainableAV/PAN20/SS.json" --SD_file_path "explainableAV/PAN20/SD.json" --DS_file_path "explainableAV/PAN20/DS.json" --DD_file_path "explainableAV/PAN20/DD.json"
+```
+
+### Results
+
+To print an overview of the number of pairs per pair type in the data, run:
+```sh
+python -m explainableAV.data_prep.data_distributions --data_name "PAN20"
+```
+
+To print an overview of the number of pairs per split per pair type in the data, run:
+```sh
+# PAN20
+python -m explainableAV.data_prep.data_distributions --statistic 'splits' --data_name "PAN20"
+```
+
+To plot the topic distributions of the train and test dataset, run the following:
+```sh
+python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution' --data_name "PAN20"
 ```
