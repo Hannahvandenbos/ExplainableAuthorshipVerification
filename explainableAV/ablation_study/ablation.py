@@ -429,6 +429,8 @@ if __name__ == '__main__':
             print("Not a valid way to do layer ablation, choose ablate layers from 'first', 'second', 'both'")
             exit(0)
         print("Layer(s) to ablate: ", layers_to_ablate)
+    else:
+        layers_to_ablate=None
 
     for line in tqdm(data): # loop through all data
         sentence1 = line["Pair"][0]
