@@ -29,7 +29,7 @@ python -m explainableAV.probes.probing --model_name 'StyleDistance' --data_path 
 ```
 Repeat the fine-tuned masked experiments for ModernBERT and StyleDistance
 Results are stored in explainableAV/results/probing_metrics/
-Results of the probing losses are stored in explainableAV/results/probing_losses/
+Results of the probing losses are stored in explainableAV/results/probing_losses
 
 ### Plots
 ```sh
@@ -48,3 +48,4 @@ python -m explainableAV.results.probing_losses.plot --plot_type 'probing_learnin
 python -m explainableAV.results.probing_losses.plot --plot_type 'probing_learning_curve' --model_name 'ModernBERT'
 python -m explainableAV.results.probing_losses.plot --plot_type 'probing_learning_curve' --model_name 'StyleDistance'
 ```
+Plots are stored in explainableAV/results/probing_metrics
