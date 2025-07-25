@@ -57,7 +57,7 @@ def top_k_words_plot(data_LUAR, data_ModernBERT, data_StyleDistance):
             ax.set_ylabel('Topic Coverage', fontsize=20)
 
     plt.tight_layout()
-    plt.savefig('explainableAV/results/topic_tokens/top_k.pdf')
+    plt.savefig('explainableAV/results/attention/top_k.pdf')
     plt.show()
 
 
@@ -109,7 +109,7 @@ def top_k_ratio_plot(data_LUAR, data_ModernBERT, data_StyleDistance):
         i += 1
 
     plt.tight_layout()
-    plt.savefig('explainableAV/results/topic_tokens/top_ratio.pdf')
+    plt.savefig('explainableAV/results/attention/top_ratio.pdf')
     plt.show()
 
 
@@ -123,8 +123,8 @@ def argument_parser():
 
 if __name__ == '__main__':
     args = argument_parser()
-    data_LUAR = load_dataset(data_path(f"explainableAV/results/topic_tokens/attention_top_LUAR_rollout.json", args.luar_results_path))
-    data_ModernBERT = load_dataset(data_path(f"explainableAV/results/topic_tokens/attention_top_ModernBERT_value_zeroing.json", args.modernbert_results_path))
-    data_StyleDistance = load_dataset(data_path(f"explainableAV/results/topic_tokens/attention_top_StyleDistance_raw.json", args.styledistance_results_path))
+    data_LUAR = load_dataset(data_path(f"explainableAV/results/attention/attention_top_LUAR_rollout.json", args.luar_results_path))
+    data_ModernBERT = load_dataset(data_path(f"explainableAV/results/attention/attention_top_ModernBERT_value_zeroing.json", args.modernbert_results_path))
+    data_StyleDistance = load_dataset(data_path(f"explainableAV/results/attention/attention_top_StyleDistance_raw.json", args.styledistance_results_path))
     top_k_words_plot(data_LUAR, data_ModernBERT, data_StyleDistance)
     top_k_ratio_plot(data_LUAR, data_ModernBERT, data_StyleDistance)
