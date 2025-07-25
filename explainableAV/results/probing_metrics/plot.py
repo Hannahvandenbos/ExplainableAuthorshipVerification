@@ -227,5 +227,5 @@ if __name__ == '__main__':
         metric_results_StyleDistance = load_dataset(data_path("explainableAV/results/probing_metrics/probing_metrics_StyleDistance.json", args.styledistance_results_path))
         if args.plot_type == 'heatmap_f1':
             probing_f1_only(metric_results_LUAR, metric_results_ModernBERT, metric_results_StyleDistance)
-        elif args.plot_type == 'probing_line_plot'
+        elif args.plot_type == 'probing_line_plot':
             probing_accuracy(metric_results_LUAR, metric_results_ModernBERT, metric_results_StyleDistance)
