@@ -36,6 +36,8 @@ python -m explainableAV.results.attention.plot
 Plots are stored in explainableAV/results/attention
 
 ## Attention Distribution
+
+### Plots
 ```sh
 python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'LUAR' --plot_type 'text_plot' --datapoint 246
 python -m explainableAV.attention.attention --data_path 'explainableAV/Amazon/attention_most_influence.json' --attention_type 'value_zeroing' --model_name 'ModernBERT' --plot_type 'text_plot' --datapoint 246
