@@ -44,8 +44,8 @@ python -m explainableAV.results.probing_metrics.plot --plot_type 'heatmap' --mod
 python -m explainableAV.results.probing_metrics.plot --plot_type 'heatmap_f1'
 
 # probing learning curve
-python -m explainableAV.results.probing_losses.plot --plot_type 'probing_learning_curve' --model_name 'LUAR'
-python -m explainableAV.results.probing_losses.plot --plot_type 'probing_learning_curve' --model_name 'ModernBERT'
-python -m explainableAV.results.probing_losses.plot --plot_type 'probing_learning_curve' --model_name 'StyleDistance'
+python -m explainableAV.results.probing_losses.plot --model_name 'LUAR' --results_path 'explainableAV/results/probing_losses/probing_losses_LUAR.json'
+python -m explainableAV.results.probing_losses.plot --model_name 'ModernBERT' --results_path 'explainableAV/results/probing_losses/probing_losses_ModernBERT.json'
+python -m explainableAV.results.probing_losses.plot --model_name 'StyleDistance' --results_path 'explainableAV/results/probing_losses/probing_losses_StyleDistance.json'
 ```
 Plots are stored in explainableAV/results/probing_metrics
