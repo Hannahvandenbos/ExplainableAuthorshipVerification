@@ -40,6 +40,7 @@ Finally, to create the train, test, and validation splits of the text pairs, run
 ```sh
 python -m explainableAV.data_prep.data_split --samples_per_pair 15000 --SS_file_path "explainableAV/Amazon/SS.json" --SD_file_path "explainableAV/Amazon/SD.json" --DS_file_path "explainableAV/Amazon/DS.json" --DD_file_path "explainableAV/Amazon/DD.json"
 ```
+For a smaller dataset, change --samples_per_pair to a smaller number as other commands are specific to the full data.
 
 ### Results
 To print an overview of the number of pairs per pair type in the data, run:
