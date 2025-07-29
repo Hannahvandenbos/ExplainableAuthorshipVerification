@@ -14,6 +14,7 @@ python -m explainableAV.extract_topic.guided_lda --data_path "explainableAV/PAN2
 python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --inter_distance # evaluation
 python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --evaluate_masks # evaluation
 ```
+*If you use a different size test set, change --data_path to .../test_set_yoursizex4.json where yoursize corresponds with the test size of one pair type in your data.*
 The dataset with topic words is stored in explainableAV/extract_topic
 
 To evaluate multiple numbers of topic words with Guided LDA run:
@@ -28,6 +29,7 @@ python -m explainableAV.extract_topic.guided_lda --data_path "explainableAV/PAN2
 python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --inter_distance --evaluate # evaluation
 python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --evaluate_masks --evaluate # evaluation
 ```
+*If you use a different size test set, change --data_path to .../test_set_yoursizex4.json where yoursize corresponds with the test size of one pair type in your data.*
 The datasets with topic words are stored in explainableAV/extract_topic
 The evaluation results are stored in: explainableAV/extract_topic/{data_name}_evaluate_mask_percentage.json and explainableAV/extract_topic/{data_name}_evaluate_inter_topic_distance.json
 
@@ -40,6 +42,7 @@ python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explain
 # PAN20
 python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --plot
 ```
+*If you use a different size test set, change --data_path to .../test_set_yoursizex4.json where yoursize corresponds with the test size of one pair type in your data.*
 The plot is stored in explainableAV/extract_topic
 
 ## Perturbations
