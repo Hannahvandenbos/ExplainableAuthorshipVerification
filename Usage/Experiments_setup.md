@@ -1,8 +1,8 @@
 # Experiments Setup
-This section provides information on how to obtain the model thresholds.
+This file provides information on how to obtain the model classification thresholds.
 
 ## Thresholds
-To find the optimal thresholds for the AV models, according to the minimum standard deviation between the accuracies over the pair types, run the following code whereby the plots over the thresholds are plotted as well (in explainableAV/models/results/):
+To find the optimal thresholds for the AV models, according to the minimum standard deviation between the accuracies over the pair types, run the following code whereby the plots over the thresholds are plotted as well:
 ```sh
 python -m explainableAV.models.find_thresholds # Amazon data, LUAR model
 python -m explainableAV.models.find_thresholds --model_name 'ModernBERT' # Amazon data, ModernBERT model
