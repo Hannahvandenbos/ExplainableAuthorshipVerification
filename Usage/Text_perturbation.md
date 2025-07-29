@@ -86,8 +86,13 @@ To create the **perturbation-specific baselines** for the behavioral experiment,
 To run on the **PAN20 data**, replace the --data_path with "explainableAV/PAN20/XX_test.json" with XX the corresponding pair type file and replace --topic_related_path with "explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json" and add the argument --data_name "pan20"
 
 The datasets are structured similarly to the XX_test.json datasets. \
-The following datasets are stored in explainableAV/change_topic/Amazon: \
-amazon_lda_SS_asterisk_False_False.json&emsp;amazon_lda_SD_asterisk_False_False.json&emsp;amazon_lda_DS_asterisk_False_False.json&emsp;amazon_lda_DD_asterisk_False_False.json \
+The following datasets are stored:
+In explainableAV/change_topic/Amazon:&emsp;In explainableAV/change_topic/Amazon_baseline: \
+1. amazon_lda_SS_asterisk_False_False.json&emsp;hallo
+2. amazon_lda_SD_asterisk_False_False.json
+3. amazon_lda_DS_asterisk_False_False.json
+4. amazon_lda_DD_asterisk_False_False.json
+
 The datasets are stored in explainableAV/change_topic/Amazon, explainableAV/change_topic/PAN20, explainableAV/change_topic/Amazon_baseline, explainableAV/change_topic/PAN20_baseline
 
 
