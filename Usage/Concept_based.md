@@ -27,6 +27,7 @@ python -m explainableAV.probes.probing --model_name 'StyleDistance' --data_path 
 python -m explainableAV.probes.probing --model_name 'StyleDistance' --data_path 'explainableAV/change_topic/Amazon/amazon_lda_DS_asterisk_False_False.json' --masked_data
 python -m explainableAV.probes.probing --model_name 'StyleDistance' --data_path 'explainableAV/change_topic/Amazon/amazon_lda_DD_asterisk_False_False.json' --masked_data
 ```
+*If you use a different size test set, change --data_path to .../test_set_yoursizex4.json where yoursize corresponds with the test size of one pair type in your data for Fine-tuned test and Pre-trained test.*
 Repeat the fine-tuned masked experiments for ModernBERT and StyleDistance
 Results are stored in explainableAV/results/probing_metrics/
 Results of the probing losses are stored in explainableAV/results/probing_losses
