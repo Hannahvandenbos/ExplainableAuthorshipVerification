@@ -115,7 +115,7 @@ def topic_distribution(data, dataset, split='test'):
     plt.title(f"Topic Distribution ({dataset})", fontsize=28)
     plt.tight_layout()
     plt.subplots_adjust(bottom=0.5)
-    plt.savefig(f'explainableAV/data_prep//Topic_distribution_{dataset}_{split}.pdf')
+    plt.savefig(f'explainableAV/data_prep/Topic_distribution_{dataset}_{split}.pdf')
 
 def argument_parser():
     parser = argparse.ArgumentParser()
