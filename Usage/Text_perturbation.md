@@ -39,7 +39,7 @@ The evaluation results are stored as \
 explainableAV/extract_topic/amazon_evaluate_mask_percentage.json \
 explainableAV/extract_topic/amazon_evaluate_inter_topic_distance.json \ 
 explainableAV/extract_topic/pan20_evaluate_mask_percentage.json \
-explainableAV/extract_topic/pan20_evaluate_mask_percentage.json \
+explainableAV/extract_topic/pan20_evaluate_mask_percentage.json
 
 ### Results
 The evaluation plot, if you tried multiple sizes, can be plotted by using the following command:
@@ -135,10 +135,10 @@ python -m explainableAV.change_topic.perturbation_quality_plot
 # PAN20
 python -m explainableAV.change_topic.perturbation_quality_plot --dataset_name "pan20"
 ```
-The plots are stored as:
-explainableAV/change_topic/perplexity_plot_amazon.pdf
-explainableAV/change_topic/perplexity_plot_pan20.pdf
-explainableAV/change_topic/similarity_plot_amazon.pdf
-explainableAV/change_topic/similarity_plot_pan20.pdf
+The plots are stored as: \
+explainableAV/change_topic/perplexity_plot_amazon.pdf \
+explainableAV/change_topic/perplexity_plot_pan20.pdf \
+explainableAV/change_topic/similarity_plot_amazon.pdf \
+explainableAV/change_topic/similarity_plot_pan20.pdf 
 
 
