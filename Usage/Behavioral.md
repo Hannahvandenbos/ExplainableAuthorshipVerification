@@ -1,5 +1,8 @@
 # Behavioral (Input-Output Relations)
-To get the **original/baseline** model performance, run the following:
+This file provides information of how to run all experiments concerning the behavioral experiments of the thesis. This includes the models' baseline performance, and performance on the perturbed texts with and without random perturbations.
+
+## Baseline Model Performance
+To get the original/baseline model performance, run the following:
 ```sh
 # LUAR model, Amazon data
 python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test.json" --model_name "LUAR" --data_split "SS" --dataset_name "amazon"
@@ -19,13 +22,26 @@ python -m explainableAV.models.test --data_path "explainableAV/Amazon/SD_test.js
 python -m explainableAV.models.test --data_path "explainableAV/Amazon/DS_test.json" --model_name "StyleDistance" --data_split "DS" --dataset_name "amazon"
 python -m explainableAV.models.test --data_path "explainableAV/Amazon/DD_test.json" --model_name "StyleDistance" --data_split "DD" --dataset_name "amazon"
 ```
-Set --threshold if your threshold differs from the one in the thesis
-Replace the dataset_name to obtain all results for PAN20
-Additionally, run all commands again with --perturb_second to ensure that future results can be computed for dual perturbations
-Results are stored in explainableAV/results/predictions
+Set --threshold if your threshold differs from the one in the thesis. \
+Replace the dataset_name to obtain all results for **PAN20**. \
+Additionally, run all commands again with --perturb_second to ensure that future results can be computed for **dual perturbations**. \
+Results are stored in: \
+explainableAV/results/predictions/amazon_LUAR_predictions_mask_both.json for dual perturbation \
+explainableAV/results/predictions/amazon_LUAR_predictions_mask_first.json for single-sided perturbation \
+explainableAV/results/predictions/amazon_ModernBERT_predictions_mask_both.json for dual perturbation \
+explainableAV/results/predictions/amazon_ModernBERT_predictions_mask_first.json for single-sided perturbation \
+explainableAV/results/predictions/amazon_StyleDistance_predictions_mask_both.json for dual perturbation \
+explainableAV/results/predictions/amazon_StyleDistance_predictions_mask_first.json for single-sided perturbation
 
-### Perturbed Texts
-To obtain the results for the **perturbed texts**, run the same file with different arguments, ensure you have perturbed texts and created the perturbation-specific baselines before running this:
+explainableAV/results/predictions/pan20_LUAR_predictions_mask_both.json for dual perturbation \
+explainableAV/results/predictions/pan20_LUAR_predictions_mask_first.json for single-sided perturbation \
+explainableAV/results/predictions/pan20_ModernBERT_predictions_mask_both.json for dual perturbation \
+explainableAV/results/predictions/pan20_ModernBERT_predictions_mask_first.json for single-sided perturbation \
+explainableAV/results/predictions/pan20_StyleDistance_predictions_mask_both.json for dual perturbation \
+explainableAV/results/predictions/pan20_StyleDistance_predictions_mask_first.json for single-sided perturbation
+
+## Perturbed Texts
+To obtain the results for the perturbed texts, run the same file with different arguments, ensure you have perturbed texts and created the perturbation-specific baselines before running this:
 ```sh
 # Amazon data, LUAR model, Asterisk, single-sided perturbation
 python -m explainableAV.models.test --data_path "explainableAV/Amazon/SS_test.json" --extra_data_path "explainableAV/change_topic/Amazon/amazon_lda_SS_asterisk_True_False.json" --model_name "LUAR" --mask_type 'asterisk' --data_split "SS" --dataset_name "amazon" 
@@ -83,11 +99,23 @@ python -m explainableAV.models.test --data_path "explainableAV/Amazon/SD_test.js
 python -m explainableAV.models.test --data_path "explainableAV/Amazon/DS_test.json" --extra_data_path "explainableAV/change_topic/Amazon_baseline/amazon_new_baseline_lda_DS_change topic_True_True.json" --model_name "LUAR" --mask_type 'change topic_baseline' --data_split "DS" --dataset_name "amazon" 
 python -m explainableAV.models.test --data_path "explainableAV/Amazon/DD_test.json" --extra_data_path "explainableAV/change_topic/Amazon_baseline/amazon_new_baseline_lda_DD_change topic_True_False.json" --model_name "LUAR" --mask_type 'change topic_baseline' --data_split "DD" --dataset_name "amazon" 
 ```
-To run for different models, replace 'LUAR' with 'ModernBERT' or 'StyleDistance'
-For **dual perturbation** add --perturb_second (only for Asterisk, POS tag, and One word)
-For **PAN20** alter the data paths and dataset_name
-Optionally, set your own threshold with --threshold
-Results are stored in explainableAV/results/predictions
+To run for different models, replace 'LUAR' with 'ModernBERT' or 'StyleDistance' \
+For **dual perturbation** add --perturb_second (only for Asterisk, POS tag, and One word) \
+For **PAN20** alter the data paths and dataset_name \
+Optionally, set your own threshold with --threshold \
+Results are stored in explainableAV/results/predictions, in the same files as the baseline performance \
+The files are structured as follows:
+```sh
+{
+    Pair type: { # SS, SD, DS, or DD
+        Perturbation technique: { # asterisk, pos tag, one word, swap, llm, original, asterisk_baseline, pos tag_baseline, one word_baseline, swap_baseline
+            accuracy:
+            predictions: [...]
+            confidences: [...] }
+        }
+    }
+}
+```
 
 ### Plots
 To plot the results of the behavioral experiment:
@@ -106,4 +134,4 @@ python -m explainableAV.results.predictions.plot --plot_type 'heatmaps' --experi
 
 # Additionally, you can manually set the paths to your results when using different names through: --luar_results_path, --modernbert_results_path, --styledistance_results_path
 ```
-Plots are stored in explainableAV/results/predictions
+Plots are stored i explainableAV/results/predictions
