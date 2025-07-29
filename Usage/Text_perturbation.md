@@ -1,8 +1,8 @@
 # Text Perturbations
-In order to perturb the texts, we first have to extract topic words with Guided LDA, and then perturb the texts in various ways.
+This file indicates how to perturb the topic of the texts. First, it explains how to extract the topic words with Guided LDA. Then, it explains how to perturb the texts with 'Asterisk', 'POS tag', 'One word', 'Swap', and 'LLM'.
 
 ## Extract Topic Words
-In order to perturb the texts, we first have to extract the topic words with Guided lda. If you want to use the topic words as used in the thesis, do:
+To extract the same number of topic words as used in the thesis, run:
 ```sh
 # Amazon
 python -m explainableAV.extract_topic.guided_lda --data_path "explainableAV/Amazon/test_set_15000x4.json"
@@ -15,9 +15,13 @@ python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explain
 python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --evaluate_masks # evaluation
 ```
 *If you use a different size test set, change --data_path to .../test_set_yoursizex4.json where yoursize corresponds with the test size of one pair type in your data.*
-The dataset with topic words is stored in explainableAV/extract_topic
+The dataset with topic words for the Amazon data is stored as explainableAV/extract_topic/amazon_topic_related_8400.json
+The filtered version where common words and topic general words are excluded is stored as explainableAV/extract_topic/amazon_topic_related_8400_filtered.json
+The dataset with topic words for the PAN20 data is stored as explainableAV/extract_topic/pan20_topic_related_all_nouns.json
+The filtered version where common words and topic general words are excluded is stored as explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json
+The datasets with topic words consist of a dictionary with per topic a list of topic words.
 
-To evaluate multiple numbers of topic words with Guided LDA run:
+To evaluate multiple numbers of topic words to obtain the best size, run:
 ```sh
 # Amazon
 python -m explainableAV.extract_topic.guided_lda --data_path "explainableAV/Amazon/test_set_15000x4.json" --evaluate
@@ -30,11 +34,15 @@ python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explain
 python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/PAN20/test_set_2500x4.json" --data_name 'pan20' --evaluate_masks --evaluate # evaluation
 ```
 *If you use a different size test set, change --data_path to .../test_set_yoursizex4.json where yoursize corresponds with the test size of one pair type in your data.*
-The datasets with topic words are stored in explainableAV/extract_topic
-The evaluation results are stored in: explainableAV/extract_topic/{data_name}_evaluate_mask_percentage.json and explainableAV/extract_topic/{data_name}_evaluate_inter_topic_distance.json
+The datasets with topic words (one per size) are stored in explainableAV/extract_topic
+The evaluation results are stored as 
+explainableAV/extract_topic/amazon_evaluate_mask_percentage.json
+explainableAV/extract_topic/amazon_evaluate_inter_topic_distance.json 
+explainableAV/extract_topic/pan20_evaluate_mask_percentage.json
+explainableAV/extract_topic/pan20_evaluate_mask_percentage.json
 
 ### Results
-The evaluation plot can be plotted by using the following command:
+The evaluation plot, if you tried multiple sizes, can be plotted by using the following command:
 ```sh
 # Amazon
 python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explainableAV/Amazon/test_set_15000x4.json" --data_name 'amazon' --plot
@@ -46,7 +54,7 @@ python -m explainableAV.extract_topic.guided_lda_evaluation --data_path "explain
 The plot is stored in explainableAV/extract_topic
 
 ## Perturbations
-To create the perturbed texts (Asterisk, POS tag, One words, and Swap), for single-sided perturbation, you can run the following commands for the SS test set on the Amazon data: 
+To create the perturbed texts (Asterisk, POS tag, One words, and Swap), for single-sided perturbation, you can run the following commands for the Amazon data: 
 ```sh
 # Amazon data, asterisk, single-sided perturbation
 python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazon/SS_test.json" --topic_related_path "explainableAV/extract_topic/amazon_topic_related_8400_filtered.json" --mask_type "asterisk" --save --mask_one_text --pair_type 'SS'
@@ -77,6 +85,9 @@ To create the **perturbation-specific baselines** for the behavioral experiment,
 
 To run on the **PAN20 data**, replace the --data_path with "explainableAV/PAN20/XX_test.json" with XX the corresponding pair type file and replace --topic_related_path with "explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json" and add the argument --data_name "pan20"
 
+The datasets are structured similarly to the XX_test.json datasets.
+The following datasets are stored in explainableAV/change_topic/Amazon:
+amazon_lda_SS_asterisk_False_False.json  amazon_lda_SD_asterisk_False_False.json  amazon_lda_DS_asterisk_False_False.json  amazon_lda_DD_asterisk_False_False.json
 The datasets are stored in explainableAV/change_topic/Amazon, explainableAV/change_topic/PAN20, explainableAV/change_topic/Amazon_baseline, explainableAV/change_topic/PAN20_baseline
 
 
