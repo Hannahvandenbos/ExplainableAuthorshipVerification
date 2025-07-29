@@ -40,7 +40,7 @@ Finally, to create the train, test, and validation splits of the text pairs, run
 ```sh
 python -m explainableAV.data_prep.data_split --samples_per_pair 15000 --SS_file_path "explainableAV/Amazon/SS.json" --SD_file_path "explainableAV/Amazon/SD.json" --DS_file_path "explainableAV/Amazon/DS.json" --DD_file_path "explainableAV/Amazon/DD.json"
 ```
-For a smaller dataset, change --samples_per_pair to a smaller number as other commands are specific to the full data.
+For a smaller or larger dataset, change --samples_per_pair to a different number as the commands above are specific to the full data.
 
 ### Results
 To print an overview of the number of pairs per pair type in the data, run:
@@ -50,13 +50,15 @@ python -m explainableAV.data_prep.data_distributions
 
 To print an overview of the number of pairs per split per pair type in the data, run:
 ```sh
-python -m explainableAV.data_prep.data_distributions --statistic 'splits'
+python -m explainableAV.data_prep.data_distributions --statistic 'splits' --split_size 15000
 ```
+Split size should correspond with the test size of one pair type in your data.
 
 To plot the topic distributions of the train and test dataset, run the following:
 ```sh
-python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution'
+python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution' --split_size 15000
 ```
+Split size should correspond with the test size of one pair type in your data.
 Plots are stored in explainableAV/data_prep
 
 ## PAN20
