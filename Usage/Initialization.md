@@ -1,6 +1,6 @@
 # Initialization
 
-After downloading the project, install the necessary packages by running the following, we recommend to install it in a virtual (conda) environment:
+After downloading the project from github, install the necessary packages by running the following, we recommend to install it in a virtual (conda) environment:
 
 ```sh
 # Upgrade pip
