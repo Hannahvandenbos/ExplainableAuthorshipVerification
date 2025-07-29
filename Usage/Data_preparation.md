@@ -40,7 +40,7 @@ This will create four datasets, one per pair type: \
 explainableAV/Amazon/SS.json: contains all text pairs that are Same-author Same-topic \
 explainableAV/Amazon/SD.json: contains all text pairs that are Same-author Different-topic \
 explainableAV/Amazon/DS.json: contains all text pairs that are Different-author Same-topic \
-explainableAV/Amazon/DD.json: contains all text pairs that are Different-author Different-topic \
+explainableAV/Amazon/DD.json: contains all text pairs that are Different-author Different-topic
 
 A dataset entry has the following form:
 ```sh
@@ -62,7 +62,7 @@ explainableAV/Amazon/SD_test.json&emsp;explainableAV/Amazon/SD_val.json&emsp;exp
 explainableAV/Amazon/DS_test.json&emsp;explainableAV/Amazon/DS_val.json&emsp;explainableAV/Amazon/DS_train.json \
 explainableAV/Amazon/DD_test.json&emsp;explainableAV/Amazon/DD_val.json&emsp;explainableAV/Amazon/DD_train.json \
 explainableAV/Amazon/test_set_15000x4.json&emsp;explainableAV/Amazon/val_set_15000x4.json&emsp;explainableAV/Amazon/train_set_15000x4.json \
-Where the last line combines all pair types into one test, val or train dataset. \
+Where the last line combines all pair types into one test, val or train dataset.
 
 ### Results
 To print an overview of the number of pairs per pair type in the data, run:
@@ -108,7 +108,7 @@ This will create four datasets, one per pair type: \
 explainableAV/PAN20/SS.json: contains all text pairs that are Same-author Same-topic \
 explainableAV/PAN20/SD.json: contains all text pairs that are Same-author Different-topic \
 explainableAV/PAN20/DS.json: contains all text pairs that are Different-author Same-topic \
-explainableAV/PAN20/DD.json: contains all text pairs that are Different-author Different-topic \
+explainableAV/PAN20/DD.json: contains all text pairs that are Different-author Different-topic
 
 A dataset entry has the following form:
 ```sh
@@ -130,7 +130,7 @@ explainableAV/PAN20/SD_test.json&emsp;explainableAV/PAN20/SD_val.json&emsp;expla
 explainableAV/PAN20/DS_test.json&emsp;explainableAV/PAN20/DS_val.json&emsp;explainableAV/PAN20/DS_train.json \ 
 explainableAV/PAN20/DD_test.json&emsp;explainableAV/PAN20/DD_val.json&emsp;explainableAV/PAN20/DD_train.json \
 explainableAV/PAN20/test_set_2500x4.json&emsp;explainableAV/PAN20/val_set_2500x4.json&emsp;explainableAV/PAN20/train_set_2500x4.json \
-Where the last line combines all pair types into one test, val or train dataset \
+Where the last line combines all pair types into one test, val or train dataset
 
 ### Results
 
