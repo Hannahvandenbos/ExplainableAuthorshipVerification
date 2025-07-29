@@ -86,15 +86,7 @@ To create the **perturbation-specific baselines** for the behavioral experiment,
 To run on the **PAN20 data**, replace the --data_path with "explainableAV/PAN20/XX_test.json" with XX the corresponding pair type file and replace --topic_related_path with "explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json" and add the argument --data_name "pan20"
 
 The datasets are structured similarly to the XX_test.json datasets. \
-The following datasets are stored:
-In explainableAV/change_topic/Amazon:&emsp;In explainableAV/change_topic/Amazon_baseline: \
-1. amazon_lda_SS_asterisk_False_False.json&emsp;hallo
-2. amazon_lda_SD_asterisk_False_False.json
-3. amazon_lda_DS_asterisk_False_False.json
-4. amazon_lda_DD_asterisk_False_False.json
-
-The datasets are stored in explainableAV/change_topic/Amazon, explainableAV/change_topic/PAN20, explainableAV/change_topic/Amazon_baseline, explainableAV/change_topic/PAN20_baseline
-
+The datasets are stored in explainableAV/change_topic/Amazon, explainableAV/change_topic/PAN20, explainableAV/change_topic/Amazon_baseline, explainableAV/change_topic/PAN20_baseline.
 
 To create the LLM perturbation (Amazon only), run:
 ```sh
@@ -129,9 +121,9 @@ python -m explainableAV.change_topic.mask_quality --data_path_SS "explainableAV/
 # Amazon data, LLM
 python -m explainableAV.change_topic.mask_quality --data_path_SS "explainableAV/Amazon/SS_test.json" --data_path_SD "explainableAV/Amazon/SD_test.json" --data_path_DS "explainableAV/Amazon/DS_test.json" --data_path_DD "explainableAV/Amazon/DD_test.json" --masked_data_path_SS "explainableAV/change_topic/Amazon/amazon_llama_SS_cleaned.json" --masked_data_path_SD "explainableAV/change_topic/Amazon/amazon_llama_SD_cleaned.json" --masked_data_path_DS "explainableAV/change_topic/Amazon/amazon_llama_DS_cleaned.json" --masked_data_path_DD "explainableAV/change_topic/Amazon/amazon_llama_DD_cleaned.json" --mask_one_text --mask_type 'llm'
 ```
-Replace the files to match the PAN20 dataset.
---mask_one_text ensures a fair comparison between all perturbation techniques, but can be removed for 'Asterisk', 'POS tag', and 'One word'.
-The results are stored in explainableAV/change_topic
+Replace the files to match the PAN20 dataset. \
+--mask_one_text ensures a fair comparison between all perturbation techniques, but can be removed for 'Asterisk', 'POS tag', and 'One word'. \
+The results are stored as explainableAV/change_topic/mask_quality_results_amazon.json and explainableAV/change_topic/mask_quality_results_pan20.json
 
 ### Plot
 To plot the results from the perturbation quality, run the following:
@@ -142,5 +134,10 @@ python -m explainableAV.change_topic.perturbation_quality_plot
 # PAN20
 python -m explainableAV.change_topic.perturbation_quality_plot --dataset_name "pan20"
 ```
-The plot is stored in explainableAV/change_topic
+The plots are stored as:
+explainableAV/change_topic/perplexity_plot_amazon.pdf
+explainableAV/change_topic/perplexity_plot_pan20.pdf
+explainableAV/change_topic/similarity_plot_amazon.pdf
+explainableAV/change_topic/similarity_plot_pan20.pdf
+
 
