@@ -23,7 +23,7 @@ python -m explainableAV.models.test --data_path "explainableAV/Amazon/DS_test.js
 python -m explainableAV.models.test --data_path "explainableAV/Amazon/DD_test.json" --model_name "StyleDistance" --data_split "DD" --dataset_name "amazon"
 ```
 Set --threshold if your threshold differs from the one in the thesis. \
-Replace the dataset_name and file names to obtain all results for **PAN20**. \
+Replace the dataset_name with 'pan20' and file names to obtain all results for **PAN20**. \
 Additionally, run all commands again with --perturb_second to ensure that future results can be computed for **dual perturbations**. \
 Results are stored in: \
 explainableAV/results/predictions/amazon_LUAR_predictions_mask_both.json for dual perturbation \
