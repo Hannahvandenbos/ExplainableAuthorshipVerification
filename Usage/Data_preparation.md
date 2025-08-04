@@ -142,9 +142,11 @@ To print an overview of the number of pairs per split per pair type in the data,
 ```sh
 python -m explainableAV.data_prep.data_distributions --statistic 'splits' --data_name "PAN20" --split_size 2500
 ```
+*Split size should correspond with the test size of one pair type in your data.*
 
 To plot the topic distributions of the train and test dataset, run the following:
 ```sh
 python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution' --data_name "PAN20" --split_size 2500
 ```
+*Split size should correspond with the test size of one pair type in your data.* \
 The plot is stored as explainableAV/data_prep/Topic_distribution_PAN20_2500.pdf
