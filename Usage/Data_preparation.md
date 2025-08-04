@@ -81,7 +81,7 @@ To plot the topic distributions of the train and test dataset, run the following
 python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution' --split_size 15000
 ```
 *Split size should correspond with the test size of one pair type in your data.* \
-The plot is stored as explainableAV/data_prep/Topic_distribution_Amazon_15000.pdf
+The plots are stored as explainableAV/data_prep/Topic_distribution_Amazon_train.pdf and explainableAV/data_prep/Topic_distribution_Amazon_test.pdf
 
 ## PAN20
 The PAN20 dataset needs to be downloaded from [PAN20](https://zenodo.org/records/3724096) \
@@ -149,4 +149,4 @@ To plot the topic distributions of the train and test dataset, run the following
 python -m explainableAV.data_prep.data_distributions --statistic 'topic_distribution' --data_name "PAN20" --split_size 2500
 ```
 *Split size should correspond with the test size of one pair type in your data.* \
-The plot is stored as explainableAV/data_prep/Topic_distribution_PAN20_2500.pdf
+The plots are stored as explainableAV/data_prep/Topic_distribution_PAN20_train.pdf and explainableAV/data_prep/Topic_distribution_PAN20_test.pdf
