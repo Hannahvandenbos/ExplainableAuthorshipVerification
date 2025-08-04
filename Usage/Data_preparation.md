@@ -101,7 +101,6 @@ The dataset is stored as explainableAV/PAN20/PAN20_filtered.json and the process
 
 To create text pairs, run the following command:
 ```sh
-# PAN20
 python -m explainableAV.data_prep.create_pairs --dataset_path "explainableAV/PAN20/PAN20_filtered.json" --SS_file_path "explainableAV/PAN20/SS.json" --SD_file_path "explainableAV/PAN20/SD.json" --DS_file_path "explainableAV/PAN20/DS.json" --DD_file_path "explainableAV/PAN20/DD.json"
 ```
 This will create four datasets, one per pair type: \
@@ -121,7 +120,6 @@ entry = {
 
 Finally, to create the train, test, and validation splits of the text pairs, run the following command:
 ```sh
-# PAN20
 python -m explainableAV.data_prep.data_split --samples_per_pair 2500 --SS_file_path "explainableAV/PAN20/SS.json" --SD_file_path "explainableAV/PAN20/SD.json" --DS_file_path "explainableAV/PAN20/DS.json" --DD_file_path "explainableAV/PAN20/DD.json"
 ```
 *For a smaller or larger dataset, change --samples_per_pair here to a different number. The first commands to process the data are specific to the full data.* \
@@ -142,7 +140,6 @@ python -m explainableAV.data_prep.data_distributions --data_name "PAN20"
 
 To print an overview of the number of pairs per split per pair type in the data, run:
 ```sh
-# PAN20
 python -m explainableAV.data_prep.data_distributions --statistic 'splits' --data_name "PAN20" --split_size 2500
 ```
 
