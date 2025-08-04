@@ -97,7 +97,7 @@ python -m explainableAV.data_prep.reorder_PAN20 --texts_path "explainableAV/PAN2
 # PAN20 (large)
 python -m explainableAV.reorder_PAN20 --texts_path "explainableAV/PAN20/pan20-authorship-verification-training-large.jsonl" --label_path "explainableAV/PAN20/pan20-authorship-verification-training-large-truth.jsonl"
 ```
-The dataset is stored as explainableAV/PAN20/PAN20_filtered.json
+The dataset is stored as explainableAV/PAN20/PAN20_filtered.json and the processed entries without filtering are stored as explainableAV/PAN20/PAN20.json
 
 To create text pairs, run the following command:
 ```sh
