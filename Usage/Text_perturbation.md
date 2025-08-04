@@ -83,7 +83,9 @@ python -m explainableAV.change_topic.mask_words --data_path "explainableAV/Amazo
 For **dual perturbation** remove --mask_one_text. For swap, there is no dual perturbation. \
 To create the **perturbation-specific baselines** for the behavioral experiment, add --baseline to each command
 
-To run on the **PAN20 data**, replace the --data_path with "explainableAV/PAN20/XX_test.json" with XX the corresponding pair type file and replace --topic_related_path with "explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json" and add the argument --data_name "pan20"
+To run on the **PAN20 data**, replace the --data_path with "explainableAV/PAN20/XX_test.json" with XX the corresponding pair type file and replace --topic_related_path with "explainableAV/extract_topic/pan20_topic_related_all_nouns_filtered.json" and add the argument --data_name "pan20" \
+For **dual perturbation** remove --mask_one_text. For swap, there is no dual perturbation. \
+To create the **perturbation-specific baselines** for the behavioral experiment, add --baseline to each command
 
 The datasets are structured similarly to the XX_test.json datasets. \
 The datasets are stored in explainableAV/change_topic/Amazon, explainableAV/change_topic/PAN20, explainableAV/change_topic/Amazon_baseline, explainableAV/change_topic/PAN20_baseline.
