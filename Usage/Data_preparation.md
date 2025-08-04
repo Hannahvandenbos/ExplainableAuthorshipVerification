@@ -55,7 +55,7 @@ Finally, to create the train, test, and validation splits of the text pairs, run
 ```sh
 python -m explainableAV.data_prep.data_split --samples_per_pair 15000 --SS_file_path "explainableAV/Amazon/SS.json" --SD_file_path "explainableAV/Amazon/SD.json" --DS_file_path "explainableAV/Amazon/DS.json" --DD_file_path "explainableAV/Amazon/DD.json"
 ```
-*For a smaller or larger dataset, change --samples_per_pair to a different number as the commands above are specific to the full data.* \
+*For a smaller or larger dataset, change --samples_per_pair here to a different number. The first commands to process the data are specific to the full data.* \
 This will create the following files: \
 explainableAV/Amazon/SS_test.json&emsp;explainableAV/Amazon/SS_val.json&emsp;explainableAV/Amazon/SS_train.json \
 explainableAV/Amazon/SD_test.json&emsp;explainableAV/Amazon/SD_val.json&emsp;explainableAV/Amazon/SD_train.json \
@@ -124,6 +124,7 @@ Finally, to create the train, test, and validation splits of the text pairs, run
 # PAN20
 python -m explainableAV.data_prep.data_split --samples_per_pair 2500 --SS_file_path "explainableAV/PAN20/SS.json" --SD_file_path "explainableAV/PAN20/SD.json" --DS_file_path "explainableAV/PAN20/DS.json" --DD_file_path "explainableAV/PAN20/DD.json"
 ```
+*For a smaller or larger dataset, change --samples_per_pair here to a different number. The first commands to process the data are specific to the full data.* \
 This will create the following files: \
 explainableAV/PAN20/SS_test.json&emsp;explainableAV/PAN20/SS_val.json&emsp;explainableAV/PAN20/SS_train.json \
 explainableAV/PAN20/SD_test.json&emsp;explainableAV/PAN20/SD_val.json&emsp;explainableAV/PAN20/SD_train.json \ 
