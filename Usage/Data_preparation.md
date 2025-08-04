@@ -120,7 +120,7 @@ entry = {
 
 Finally, to create the train, test, and validation splits of the text pairs, run the following command:
 ```sh
-python -m explainableAV.data_prep.data_split --samples_per_pair 2500 --SS_file_path "explainableAV/PAN20/SS.json" --SD_file_path "explainableAV/PAN20/SD.json" --DS_file_path "explainableAV/PAN20/DS.json" --DD_file_path "explainableAV/PAN20/DD.json"
+python -m explainableAV.data_prep.data_split --samples_per_pair 2500 --data_name "PAN20" --SS_file_path "explainableAV/PAN20/SS.json" --SD_file_path "explainableAV/PAN20/SD.json" --DS_file_path "explainableAV/PAN20/DS.json" --DD_file_path "explainableAV/PAN20/DD.json"
 ```
 *For a smaller or larger dataset, change --samples_per_pair here to a different number. The first commands to process the data are specific to the full data.* \
 This will create the following files: \
