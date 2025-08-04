@@ -124,7 +124,7 @@ python -m explainableAV.change_topic.mask_quality --data_path_SS "explainableAV/
 # Amazon data, LLM
 python -m explainableAV.change_topic.mask_quality --data_path_SS "explainableAV/Amazon/SS_test.json" --data_path_SD "explainableAV/Amazon/SD_test.json" --data_path_DS "explainableAV/Amazon/DS_test.json" --data_path_DD "explainableAV/Amazon/DD_test.json" --masked_data_path_SS "explainableAV/change_topic/Amazon/amazon_llama_SS_cleaned.json" --masked_data_path_SD "explainableAV/change_topic/Amazon/amazon_llama_SD_cleaned.json" --masked_data_path_DS "explainableAV/change_topic/Amazon/amazon_llama_DS_cleaned.json" --masked_data_path_DD "explainableAV/change_topic/Amazon/amazon_llama_DD_cleaned.json" --mask_one_text --mask_type 'llm'
 ```
-Replace the files to match the PAN20 dataset. \
+Replace the files to match the PAN20 dataset and add --dataset_name 'pan20' \
 --mask_one_text ensures a fair comparison between all perturbation techniques, but can be removed for 'Asterisk', 'POS tag', and 'One word'. \
 The results are stored as explainableAV/change_topic/mask_quality_results_amazon.json and explainableAV/change_topic/mask_quality_results_pan20.json
 
